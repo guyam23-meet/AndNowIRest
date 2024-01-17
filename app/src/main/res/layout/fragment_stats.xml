@@ -12,21 +12,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
+            android:textColor="#d41c2c"
+            android:textStyle="bold"
             android:textSize="30sp"
-            android:id="@+id/user_name_stats"/>
+            android:id="@+id/user_name_stats"
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wins"
+            android:text=" - Wins: N/A"
+            android:textStyle="bold"
             android:textSize="25sp"
-            android:id="@+id/wins_stats"/>
+            android:id="@+id/wins_stats"
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Games played"
+            android:text=" - Games played: N/A"
+            android:textStyle="bold"
             android:textSize="25sp"
-            android:id="@+id/games_played_stats"/>
+            android:id="@+id/games_played_stats"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - Win Rate: N/A"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:id="@+id/win_rate_stats"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </RelativeLayout>

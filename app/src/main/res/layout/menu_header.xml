@@ -6,17 +6,25 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp">
-
-    <ImageView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="placeholder"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/white" />
+        <ImageView
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:src="@drawable/troop_swordsman_nobg"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@color/account_circle_color"
+            android:layout_height="wrap_content"
+            android:text=" And Now I Rest "
+            android:fontFamily="serif"
+            android:textSize="15sp"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 </LinearLayout>

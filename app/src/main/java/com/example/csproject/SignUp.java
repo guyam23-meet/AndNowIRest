@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -53,8 +54,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             String uid = mAuth.getCurrentUser().getUid();
-                            //adds the name to the database under the current user
-                            database.getReference("users").child(uid).child("name").setValue(name.getText().toString());
+                            //adds the name to the database under the current user and sets wins and games played to 0
+                            DatabaseReference userId_reference = database.getReference("users").child(uid);
+                            userId_reference.child("name").setValue(name.getText().toString());
+                            userId_reference.child("games_played").setValue(0);
+                            userId_reference.child("wins").setValue(0);
                             Intent i = new Intent(SignUp.this,HomePage.class);
                             startActivity(i);
                         } else {

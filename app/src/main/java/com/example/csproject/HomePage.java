@@ -24,7 +24,13 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.zip.Inflater;
 
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     private Toolbar toolbar;
@@ -51,6 +57,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         mAuth = FirebaseAuth.getInstance();
         profile_icon=findViewById(R.id.profile_icon);
         profile_icon.setOnClickListener(this);
+
     }
 
     @Override
@@ -141,8 +148,29 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         }
     }
     public void showPopup(View v){
+
         PopupMenu popup = new PopupMenu(this,v);
         popup.inflate(R.menu.profile_menu);
+        MenuItem profile_name = popup.getMenu().findItem(R.id.profile_name);
+        MenuItem profile_email = popup.getMenu().findItem(R.id.profile_email);
+        CharSequence user_email = mAuth.getCurrentUser().getEmail();
+
+        profile_email.setTitle(user_email);
+
+        String userId = mAuth.getCurrentUser().getUid();
+
+        DatabaseReference userId_reference = database.getReference("users").child(userId);
+        userId_reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                profile_name.setTitle(dataSnapshot.child("name").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         popup.show();
     }
 }
