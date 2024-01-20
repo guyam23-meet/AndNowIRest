@@ -150,9 +150,15 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     public void showPopup(View v){
 
         PopupMenu popup = new PopupMenu(this,v);
+
+        popup.setForceShowIcon(true);
+
         popup.inflate(R.menu.profile_menu);
+
         MenuItem profile_name = popup.getMenu().findItem(R.id.profile_name);
+
         MenuItem profile_email = popup.getMenu().findItem(R.id.profile_email);
+
         CharSequence user_email = mAuth.getCurrentUser().getEmail();
 
         profile_email.setTitle(user_email);
@@ -169,6 +175,17 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item == popup.getMenu().findItem(R.id.edit_profile)) {
+                    Intent i = new Intent(HomePage.this, EditProfile.class);
+                    startActivity(i);
+                }
+                return true;
             }
         });
         popup.show();

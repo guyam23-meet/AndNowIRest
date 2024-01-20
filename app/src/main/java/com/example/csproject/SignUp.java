@@ -56,11 +56,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                             String uid = mAuth.getCurrentUser().getUid();
                             //adds the name to the database under the current user and sets wins and games played to 0
                             DatabaseReference userId_reference = database.getReference("users").child(uid);
+
                             userId_reference.child("name").setValue(name.getText().toString());
+
                             userId_reference.child("games_played").setValue(0);
+
                             userId_reference.child("wins").setValue(0);
+
+                            userId_reference.child("placement").setValue(0);
+
                             Intent i = new Intent(SignUp.this,HomePage.class);
                             startActivity(i);
+
                         } else {
                             Toast.makeText(SignUp.this,"Authentication failed",Toast.LENGTH_LONG).show();
                         }

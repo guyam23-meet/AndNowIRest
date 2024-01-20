@@ -1,48 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#27C11B17">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:textColor="#d41c2c"
+            android:textColor="@color/black"
             android:textStyle="bold"
+            android:textAllCaps="true"
             android:textSize="30sp"
             android:id="@+id/user_name_stats"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30sp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" - Wins: N/A"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:id="@+id/wins_stats"
-            android:layout_marginTop="20dp"/>
+            android:layout_margin="30dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" - Games played: N/A"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:id="@+id/games_played_stats"
-            android:layout_marginTop="20dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" - Win Rate: N/A"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:id="@+id/win_rate_stats"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
-</RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wins:"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/title_wins_stats"
+                            android:textColor="@color/black" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N/A"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/wins_stats"
+                            android:layout_marginBottom="15dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Games played:"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/title_games_played_stats"
+                            android:textColor="@color/black" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N/A"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/games_played_stats"
+                            android:layout_marginBottom="15dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Win Rate:"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/title_win_rate_stats"
+                            android:textColor="@color/black" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N/A"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/win_rate_stats"
+                            android:layout_marginBottom="15dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Placement:"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/title_placement_stats"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N/A"
+                            android:textStyle="bold"
+                            android:textSize="25sp"
+                            android:id="@+id/placement_stats"/>
+
+                </LinearLayout>
+        </androidx.cardview.widget.CardView>
+</LinearLayout>

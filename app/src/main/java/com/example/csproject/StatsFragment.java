@@ -25,6 +25,7 @@ public class StatsFragment extends Fragment {
     public FirebaseAuth mAuth;
     public FirebaseDatabase database;
     public TextView winRate;
+    public TextView placement;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,22 +47,35 @@ public class StatsFragment extends Fragment {
 
        winRate = stats_fragment_layout.findViewById(R.id.win_rate_stats);
 
+       placement = stats_fragment_layout.findViewById(R.id.placement_stats);
+
        userId_reference.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
-               String games_played_value = snapshot.child("games_played").getValue().toString();
-               String wins_value = snapshot.child("wins").getValue().toString();
-               name.setText(snapshot.child("name").getValue().toString());
 
-               if(snapshot.hasChild("wins"))
-                   wins.setText(" - Wins: "+wins_value);
+               String games_played_value;
 
-               if(snapshot.hasChild("games_played"))
-                   games_played.setText(" - Games Played: "+games_played_value);
+               String wins_value;
 
-               if(snapshot.hasChild("wins") && snapshot.hasChild("games_played"))
-                   winRate.setText(" - Win Rate: "+ Integer.valueOf(wins_value)*100/Integer.valueOf(games_played_value)+"%");
+               String name_value;
 
+                if(snapshot.hasChild("name")){
+                    name_value = snapshot.child("name").getValue().toString();
+                    name.setText(name_value);
+                }
+
+               if(snapshot.hasChild("wins") && snapshot.hasChild("games_played")) {
+                   wins_value = snapshot.child("wins").getValue().toString();
+                   games_played_value = snapshot.child("games_played").getValue().toString();
+
+                   wins.setText(wins_value);
+
+                   games_played.setText(games_played_value);
+
+                   winRate.setText(Integer.valueOf(wins_value) * 100 / Integer.valueOf(games_played_value) + "%");
+
+                   placement.setText(String.valueOf(Integer.valueOf(wins_value)*2-Integer.valueOf(games_played_value)));
+               }
            }
 
            @Override

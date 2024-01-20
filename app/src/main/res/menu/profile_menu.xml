@@ -4,7 +4,15 @@
     <item android:id="@+id/profile_name"
         android:title="username"
         app:showAsAction="never"/>
+
     <item android:id="@+id/profile_email"
         android:title="email@example.com"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+
+    <item android:id="@+id/edit_profile"
+        android:title="Edit profile"
+        app:showAsAction="never"
+        android:icon="@drawable/icon_baseline_edit_24"/>
+
+
 </menu>
