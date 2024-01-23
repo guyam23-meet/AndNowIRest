@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,64 +13,62 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class EditProfile extends AppCompatActivity implements View.OnClickListener{
-    public Button submit;
+public class EditProfile extends AppCompatActivity implements View.OnClickListener {
 
-    public EditText edit_email;
-
-    public EditText edit_password;
-
-    public EditText edit_name;
-
+    public Button editProfileButton;
+    public EditText email;
+    public EditText password;
+    public EditText name;
     public FirebaseDatabase database;
-
     public FirebaseAuth mAuth;
-
-    public TextView back_button;
+    public TextView backButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        CommonFunctions.fullscreenSetup(getWindow());
         setContentView(R.layout.activity_edit_profile);
+        CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
 
         mAuth = FirebaseAuth.getInstance();
-
         database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
 
-        submit = findViewById(R.id.submit_edit_profile);
-        submit.setOnClickListener(this);
+        email = findViewById(R.id.et_email_activity_edit);
+        password = findViewById(R.id.et_password_activity_edit);
+        name = findViewById(R.id.et_name_activity_edit);
+        editProfileButton = findViewById(R.id.btn_submit_activity_edit);
+        backButton = findViewById(R.id.btn_back_activity_edit);
 
-        edit_email = findViewById(R.id.email_edit_profile);
-
-        edit_password = findViewById(R.id.password_edit_profile);
-
-        edit_name = findViewById(R.id.name_edit_profile);
-
-        back_button = findViewById(R.id.back_button_edit_profile);
-        back_button.setOnClickListener(this);
+        editProfileButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View view) {
-        if(view==submit){
-            String userId = mAuth.getCurrentUser().getUid();
+    public void onClick(View view)
+    {
+        if(view == editProfileButton)
+            updateProfile();
 
-            DatabaseReference userId_reference = database.getReference("users").child(userId);
-            String edit_name_text = edit_name.getText().toString();
-            if(edit_name_text.length()!=0)
-                userId_reference.child("name").setValue(edit_name_text);
+        else if(view == backButton)
+            startActivity(new Intent(EditProfile.this, HomePage.class));
+    }
 
-            String edit_email_text = edit_email.getText().toString();
-            if(edit_email_text.length()!=0)
-                mAuth.getCurrentUser().updateEmail(edit_email_text);
+    public void updateProfile()
+    {
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference userId_reference = database.getReference("users").child(userId);
 
-            String edit_password_text = edit_password.getText().toString();
-            if(edit_email_text.length()!=0)
-                mAuth.getCurrentUser().updatePassword(edit_password_text);
-        }
-        if(view==back_button){
-            Intent i = new Intent(EditProfile.this,HomePage.class);
-            startActivity(i);
-        }
+        String editNameInput = name.getText().toString();
+        if (editNameInput.length() != 0)
+            userId_reference.child("name").setValue(editNameInput);
+
+        String editEmailInput = email.getText().toString();
+        if (editEmailInput.length() != 0)
+            mAuth.getCurrentUser().updateEmail(editEmailInput);
+
+        String editPasswordInput = password.getText().toString();
+        if (editPasswordInput.length() != 0)
+            mAuth.getCurrentUser().updatePassword(editPasswordInput);
     }
 }

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/profile_name"
+    <item android:id="@+id/item_name_profile_menu"
         android:title="username"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/profile_email"
+    <item android:id="@+id/item_email_profile_menu"
         android:title="email@example.com"
         app:showAsAction="never" />
 
-    <item android:id="@+id/edit_profile"
+    <item android:id="@+id/item_editProfile_profile_menu"
         android:title="Edit profile"
         app:showAsAction="never"
         android:icon="@drawable/icon_baseline_edit_24"/>
-
-
 </menu>

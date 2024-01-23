@@ -6,25 +6,26 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="100sp"
             android:layout_height="100sp"
-            android:src="@drawable/troop_swordsman_nobg"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/troop_swordsman_nobg" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:background="@color/account_circle_color"
             android:layout_height="wrap_content"
-            android:text=" And Now I Rest "
+            android:background="@color/account_circle_color"
             android:fontFamily="serif"
-            android:textSize="15sp"
-            android:textColor="@android:color/white" />
+            android:text=" And Now I Rest "
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

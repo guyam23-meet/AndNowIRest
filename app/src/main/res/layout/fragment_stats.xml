@@ -3,101 +3,105 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#27C11B17">
+    android:background="#27C11B17"
+    android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:textSize="30sp"
-            android:id="@+id/user_name_stats"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30sp"/>
+    <TextView
+        android:id="@+id/tv_name_fragment_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30sp"
+        android:text="Name"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="20dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+            <TextView
+                android:id="@+id/tv_winsTitle_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wins:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Wins:"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/title_wins_stats"
-                            android:textColor="@color/black" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="N/A"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/wins_stats"
-                            android:layout_marginBottom="15dp"/>
+            <TextView
+                android:id="@+id/tv_winsValue_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="N/A"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Games played:"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/title_games_played_stats"
-                            android:textColor="@color/black" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="N/A"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/games_played_stats"
-                            android:layout_marginBottom="15dp"/>
+            <TextView
+                android:id="@+id/tv_gamesPlayedTitle_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Games played:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Win Rate:"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/title_win_rate_stats"
-                            android:textColor="@color/black" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="N/A"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/win_rate_stats"
-                            android:layout_marginBottom="15dp"/>
+            <TextView
+                android:id="@+id/tv_gamesPlayedValue_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="N/A"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Placement:"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/title_placement_stats"
-                            android:textColor="@color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="N/A"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:id="@+id/placement_stats"/>
+            <TextView
+                android:id="@+id/tv_winRateTitle_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Win Rate:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-                </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/tv_winRateValue_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="N/A"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_placementTitle_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Placement:"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_placementValue_fragment_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

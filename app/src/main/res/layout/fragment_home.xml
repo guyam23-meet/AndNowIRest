@@ -3,54 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#27C11B17"
     android:gravity="center_horizontal"
-    android:background="#27C11B17">
-        <LinearLayout
-            android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_name_fragment_home"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="10dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:textAllCaps="true"
-                    android:id="@+id/name_home"/>
-                <ImageView
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:src="@drawable/icon_placement"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="Placement"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="30sp"
-                    android:id="@+id/placement_home"/>
-
-        </LinearLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/troop_knight_nobg"/>
+            android:text="Name"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:layout_width="130dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="80dp"
-            android:backgroundTint="@color/Chilli_Pepper"
-            android:text="PLAY"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            app:cornerRadius="15dp"
-            android:id="@+id/play_home"/>
+        <ImageView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:src="@drawable/icon_placement" />
+
+        <TextView
+            android:id="@+id/tv_placement_fragment_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Placement"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/troop_knight_nobg" />
+
+    <Button
+        android:id="@+id/btn_play_fragment_home"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="@color/Chilli_Pepper"
+        android:text="PLAY"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:cornerRadius="15dp" />
 </LinearLayout>

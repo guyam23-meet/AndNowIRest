@@ -10,79 +10,53 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class StatsFragment extends Fragment {
+
     public TextView name;
     public TextView wins;
-    public TextView games_played;
+    public TextView gamesPlayed;
     public FirebaseAuth mAuth;
     public FirebaseDatabase database;
     public TextView winRate;
     public TextView placement;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View stats_fragment_layout = inflater.inflate(R.layout.fragment_stats,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        View statsFragmentLayout = inflater.inflate(R.layout.fragment_stats, container, false);
 
         database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
-
         mAuth = FirebaseAuth.getInstance();
 
-        String userId = mAuth.getCurrentUser().getUid();
+        name = statsFragmentLayout.findViewById(R.id.tv_name_fragment_stats);
+        wins = statsFragmentLayout.findViewById(R.id.tv_winsValue_fragment_stats);
+        gamesPlayed = statsFragmentLayout.findViewById(R.id.tv_gamesPlayedValue_fragment_stats);
+        winRate = statsFragmentLayout.findViewById(R.id.tv_winRateValue_fragment_stats);
+        placement = statsFragmentLayout.findViewById(R.id.tv_placementValue_fragment_stats);
 
-        DatabaseReference userId_reference = database.getReference("users").child(userId);
+        updateViewsFromUser();
 
-       name = stats_fragment_layout.findViewById(R.id.user_name_stats);
+        return statsFragmentLayout;
+    }
 
-       wins = stats_fragment_layout.findViewById(R.id.wins_stats);
+    public void updateViewsFromUser()
+    {
+        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        {
+            String userName = userValues[2];
+            String userWins = userValues[3];
+            String userGamesPlayed = userValues[4];
 
-       games_played = stats_fragment_layout.findViewById(R.id.games_played_stats);
+            name.setText(userName);
+            wins.setText(userWins);
+            gamesPlayed.setText(userGamesPlayed);
+            winRate.setText(Integer.valueOf(userWins) * 100 / Math.max(Integer.valueOf(userGamesPlayed),1) + "%");
+            placement.setText(String.valueOf(Integer.valueOf(userWins) * 2 - Integer.valueOf(userGamesPlayed)));
+        });
 
-       winRate = stats_fragment_layout.findViewById(R.id.win_rate_stats);
-
-       placement = stats_fragment_layout.findViewById(R.id.placement_stats);
-
-       userId_reference.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-               String games_played_value;
-
-               String wins_value;
-
-               String name_value;
-
-                if(snapshot.hasChild("name")){
-                    name_value = snapshot.child("name").getValue().toString();
-                    name.setText(name_value);
-                }
-
-               if(snapshot.hasChild("wins") && snapshot.hasChild("games_played")) {
-                   wins_value = snapshot.child("wins").getValue().toString();
-                   games_played_value = snapshot.child("games_played").getValue().toString();
-
-                   wins.setText(wins_value);
-
-                   games_played.setText(games_played_value);
-
-                   winRate.setText(Integer.valueOf(wins_value) * 100 / Integer.valueOf(games_played_value) + "%");
-
-                   placement.setText(String.valueOf(Integer.valueOf(wins_value)*2-Integer.valueOf(games_played_value)));
-               }
-           }
-
-           @Override
-           public void onCancelled(@NonNull DatabaseError error) {
-
-           }
-       });
-    return stats_fragment_layout;
     }
 }

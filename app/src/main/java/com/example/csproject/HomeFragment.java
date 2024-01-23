@@ -18,61 +18,111 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeFragment extends Fragment {
-    public TextView name_home;
-    public TextView placement_home;
-    public Button play_home;
+public class HomeFragment extends Fragment implements View.OnClickListener {
+
+    public TextView name;
+    public TextView placement;
+    public Button play;
     public FirebaseAuth mAuth;
     public FirebaseDatabase database;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View home_fragment_layout = inflater.inflate(R.layout.fragment_home,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        View homeFragmentLayout = inflater.inflate(R.layout.fragment_home, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-
         database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
 
-        name_home = home_fragment_layout.findViewById(R.id.name_home);
+        name = homeFragmentLayout.findViewById(R.id.tv_name_fragment_home);
+        placement = homeFragmentLayout.findViewById(R.id.tv_placement_fragment_home);
+        play = homeFragmentLayout.findViewById(R.id.btn_play_fragment_home);
 
-        placement_home = home_fragment_layout.findViewById(R.id.placement_home);
+        play.setOnClickListener(this);
 
-        play_home = home_fragment_layout.findViewById(R.id.play_home);
+        updateViewsFromUser();
 
-        String userId = mAuth.getCurrentUser().getUid();
-
-        DatabaseReference userId_reference = database.getReference("users").child(userId);
-
-        userId_reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name_value;
-
-                String games_played_value;
-
-                String wins_value;
-
-
-                if(snapshot.hasChild("name")) {
-                    name_value = snapshot.child("name").getValue().toString();
-                    name_home.setText(name_value);
-                }
-                if(snapshot.hasChild("wins") && snapshot.hasChild("games_played")) {
-
-                    wins_value = snapshot.child("wins").getValue().toString();
-
-                    games_played_value = snapshot.child("games_played").getValue().toString();
-
-                    placement_home.setText(String.valueOf(Integer.valueOf(wins_value)*2-Integer.valueOf(games_played_value)));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        return home_fragment_layout;
+        return homeFragmentLayout;
     }
+
+    public void updateViewsFromUser()
+    {
+        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        {
+            String userName = userValues[2];
+            String userWins = userValues[3];
+            String userGamesPlayed = userValues[4];
+
+            name.setText(userName);
+            placement.setText(String.valueOf(Integer.valueOf(userWins) * 2 - Integer.valueOf(userGamesPlayed)));
+        });
+    }
+    @Override
+    public void onClick(View view)
+    {
+        if (view == play)
+            gameSetUpManager();
+    }
+
+    //game setup functions
+    public void gameSetUpManager()
+    {
+        DatabaseReference games = database.getReference("Games");
+        games.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                if (snapshot.hasChildren())
+                {
+                    for (DataSnapshot room : snapshot.getChildren())
+                    {
+                        if (!room.hasChild("Guest"))
+                        {
+                            joinRoom(games.child(room.getKey()));
+                            return;
+                        }}}
+                openRoom(games);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    public void joinRoom(DatabaseReference room)
+    {
+
+    }
+    public void openRoom(DatabaseReference games)
+    {
+        CommonFunctions.getUserValues(database, mAuth, userValues->
+        {
+            String hostEmail = userValues[1];
+            String hostName = userValues[2];
+
+            DatabaseReference room = games.child(hostEmail);
+
+            room.child("host").setValue(hostName);
+            room.child("turn").setValue(true);
+
+            waitForPlayers(room);
+        });
+    }
+    //add a loading screen that disappears when a game is found
+    public void waitForPlayers(DatabaseReference room)
+    {
+        //add loading screen
+        room.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                //disable the loading screen
+
+                //go to the game page
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    //end game functions
+
 }
