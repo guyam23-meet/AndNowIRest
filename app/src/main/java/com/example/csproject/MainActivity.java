@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view)
     {
         if (view == signUp)
-            startActivity(new Intent(MainActivity.this, SignUp.class));
+            startActivity(new Intent(MainActivity.this, SignUpActivity.class));
 
         if (view == signIn)
             checkFieldsAndSignIn();
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addOnCompleteListener(this, task ->
                 {
                     if (task.isSuccessful())
-                        startActivity(new Intent(MainActivity.this, HomePage.class));
+                        startActivity(new Intent(MainActivity.this, HomePageActivity.class));
 
                     else
                         Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();

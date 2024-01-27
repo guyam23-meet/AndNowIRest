@@ -1,5 +1,6 @@
 package com.example.csproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         play.setOnClickListener(this);
 
         updateViewsFromUser();
-
         return homeFragmentLayout;
     }
 
@@ -61,14 +61,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view)
     {
-        if (view == play)
-            gameSetUpManager();
+        if (view == play) {
+            getActivity().startActivity(new Intent(getActivity(), GameActivity.class));
+//            gameSetUpManager();
+        }
     }
 
     //game setup functions
     public void gameSetUpManager()
     {
-        DatabaseReference games = database.getReference("Games");
+        DatabaseReference games = database.getReference("games");
         games.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
@@ -77,47 +79,62 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 {
                     for (DataSnapshot room : snapshot.getChildren())
                     {
-                        if (!room.hasChild("Guest"))
+                        if (!room.hasChild("guest"))
                         {
-                            joinRoom(games.child(room.getKey()));
+                            joinGame(games.child(room.getKey()));
                             return;
-                        }}}
-                openRoom(games);
+                        }
+                    }
+                }
+                openGame(games);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-    public void joinRoom(DatabaseReference room)
+    public void joinGame(DatabaseReference room)
     {
+        CommonFunctions.getUserValues(database, mAuth, userValues -> {
+            String guestName = userValues[2];
+            int guestWins = Integer.valueOf(userValues[3]);
+            int guestGamesPlayed = Integer.valueOf(userValues[4]);
 
+            room.child("guest").setValue(guestName);
+            room.child("guest_placement").setValue(""+(2*guestWins-guestGamesPlayed));
+
+            Intent i = new Intent(getActivity(), GameActivity.class).putExtra("roomRef","games/"+room.getKey());
+            getActivity().startActivity(i);
+        });
     }
-    public void openRoom(DatabaseReference games)
+    public void openGame(DatabaseReference games)
     {
         CommonFunctions.getUserValues(database, mAuth, userValues->
         {
             String hostEmail = userValues[1];
             String hostName = userValues[2];
+            int hostWins = Integer.valueOf(userValues[3]);
+            int hostGamesPlayed = Integer.valueOf(userValues[4]);
 
             DatabaseReference room = games.child(hostEmail);
 
             room.child("host").setValue(hostName);
             room.child("turn").setValue(true);
+            room.child("host_placement").setValue(""+(2*hostWins-hostGamesPlayed));
 
             waitForPlayers(room);
         });
     }
-    //add a loading screen that disappears when a game is found
     public void waitForPlayers(DatabaseReference room)
     {
-        //add loading screen
+        WaitingForPlayersDialog waitDialog = new WaitingForPlayersDialog(HomeFragment.this);
+        waitDialog.startWaitingDialog();
         room.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
-                //disable the loading screen
-
-                //go to the game page
+                waitDialog.closeWaitingDialog();
+                Intent i = new Intent(getActivity(), GameActivity.class).putExtra("roomRef","games/"+room.getKey());
+                getActivity().startActivity(i);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

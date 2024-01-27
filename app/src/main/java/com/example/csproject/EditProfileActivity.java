@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class EditProfile extends AppCompatActivity implements View.OnClickListener {
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public Button editProfileButton;
     public EditText email;
@@ -51,7 +51,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
             updateProfile();
 
         else if(view == backButton)
-            startActivity(new Intent(EditProfile.this, HomePage.class));
+            startActivity(new Intent(EditProfileActivity.this, HomePageActivity.class));
     }
 
     public void updateProfile()

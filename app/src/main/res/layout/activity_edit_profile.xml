@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".EditProfile">
+    tools:context=".EditProfileActivity">
 
     <TextView
         android:id="@+id/btn_back_activity_edit"

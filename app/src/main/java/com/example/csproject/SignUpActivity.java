@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class SignUp extends AppCompatActivity implements View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     public FirebaseAuth mAuth;
     public FirebaseDatabase database;
@@ -60,7 +60,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             checkFieldsAndSignUp();
 
         else if (view == goToSignIn)
-            startActivity(new Intent(SignUp.this, MainActivity.class));
+            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
     }
 
     //sign up functions
@@ -72,10 +72,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     if (task.isSuccessful())
                     {
                         insertUserToDatabase();
-                        startActivity(new Intent(SignUp.this, HomePage.class));
+                        startActivity(new Intent(SignUpActivity.this, HomePageActivity.class));
                     }
                     else
-                        Toast.makeText(SignUp.this, "Authentication failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignUpActivity.this, "Authentication failed", Toast.LENGTH_LONG).show();
                 });
     }
     public void insertUserToDatabase()
@@ -98,7 +98,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             createUser(emailInput, passwordInput);
         }
         else
-            Toast.makeText(SignUp.this, "Please fill all the given fields", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignUpActivity.this, "Please fill all the given fields", Toast.LENGTH_LONG).show();
     }
     //end sign up functions
 }

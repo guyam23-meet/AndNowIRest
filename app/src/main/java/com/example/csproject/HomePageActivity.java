@@ -7,6 +7,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
@@ -41,6 +42,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+
         profileIcon =findViewById(R.id.tv_profileIcon_activity_home);
 
         profileIcon.setOnClickListener(this);
@@ -55,7 +57,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     {
         Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
         mAuth.signOut();
-        startActivity(new Intent(HomePage.this, MainActivity.class));
+        startActivity(new Intent(HomePageActivity.this, MainActivity.class));
     }
     @Override
     public void onClick(View view)
@@ -141,7 +143,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         popup.setOnMenuItemClickListener(item ->
         {
             if(item == editProfile)
-                startActivity(new Intent(HomePage.this, EditProfile.class));
+                startActivity(new Intent(HomePageActivity.this, EditProfileActivity.class));
             return true;
         });
     }
