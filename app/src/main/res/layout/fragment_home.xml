@@ -46,7 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:src="@drawable/troop_knight_nobg" />
+        android:src="@drawable/troop_scaleable_knight"
+        android:padding="15dp"/>
 
     <Button
         android:id="@+id/btn_play_fragment_home"

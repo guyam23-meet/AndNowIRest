@@ -17,7 +17,7 @@
             android:layout_width="100sp"
             android:layout_height="100sp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/troop_swordsman_nobg" />
+            android:src="@drawable/troop_scaleable_swordsman" />
 
         <TextView
             android:layout_width="wrap_content"
