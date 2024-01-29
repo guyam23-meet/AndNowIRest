@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             {
                 if (snapshot.hasChildren())
                 {
-                    for (DataSnapshot room : snapshot.getChildren())
+                    for (DataSnapshot room: snapshot.getChildren())
                     {
                         if (!room.hasChild("guest"))
                         {
@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
     public void openGame(DatabaseReference games)
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues->
+        CommonFunctions.getUserValues(database, mAuth, userValues ->
         {
             String hostEmail = userValues[1];
             String hostName = userValues[2];
