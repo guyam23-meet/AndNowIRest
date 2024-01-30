@@ -53,7 +53,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
 
         gameBoard = findViewById(R.id.game_board);
-        setTilesAndPositions();
+        //setTilesAndPositions();
 
         Bundle bundle = getIntent().getExtras();
         String roomRef = bundle!=null?(String)bundle.get("roomRef"):"games";//only for now
@@ -67,8 +67,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             updateGuestAndHostInfoLines();
             updateGamesPlayed();
         }
-        gameConstructor();
-        readMovesFromGameRoom();
+        //gameConstructor();
+        //readMovesFromGameRoom();
     }
 
     private void connectViews()
