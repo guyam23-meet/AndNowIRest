@@ -56,17 +56,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setTilesAndPositions();
 
         Bundle bundle = getIntent().getExtras();
-        String roomRef = bundle!=null?(String)bundle.get("roomRef"):"games";//only for now
+        String roomRef = (String)bundle.get("roomRef");
         gameRoom = database.getReference(roomRef);
         isHost = CommonFunctions.checkIsHost(gameRoom,mAuth);
         turn = isHost;
 
         connectViews();
-
-        if(gameRoom.getKey()!="games") {//only for now
-            updateGuestAndHostInfoLines();
-            updateGamesPlayed();
-        }
+        updateGuestAndHostInfoLines();
+        updateGamesPlayed();
         gameConstructor();
         readMovesFromGameRoom();
     }
