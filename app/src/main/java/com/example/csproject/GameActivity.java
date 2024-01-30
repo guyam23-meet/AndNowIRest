@@ -229,10 +229,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void updateVisualsAfterMovement(Troop movedTroop,int[] oldPos)
     {
         tiles[oldPos[0]][oldPos[1]].setBackground(Drawable.createFromPath("@drawable/custom_view_black_border"));
-        String troopType = movedTroop.getType();
-        String teamId = movedTroop.getMyTeam()?"":"enemy_";
         int[] newPos = movedTroop.getPosition();
-        tiles[newPos[0]][newPos[1]].setBackground(Drawable.createFromPath("@drawable/figure_"+teamId+troopType));
+        tiles[newPos[0]][newPos[1]].setBackground(movedTroop.getImageSRC());
     }
     public void checkIfOnThrone(int[] pos)//checks if the moved troop has got on the throne
     {
@@ -286,7 +284,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         moveListener = gameRoom.child("move").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {onChildChanged(snapshot,previousChildName);}
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
