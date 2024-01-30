@@ -179,17 +179,17 @@ public class Troop {
 
         if(!attackedTroop.getAlive())
         {
-            updateStaticsAfterDeath(attackedTroop);
+            attackedTroop.updateStaticsAfterDeath();
         }
     }
 
-    private static void updateStaticsAfterDeath(Troop attackedTroop)
+    private void updateStaticsAfterDeath()
     {
-        int[] pos = attackedTroop.getPosition();
+        int[] pos = getPosition();
         int posY = pos[0];
         int posX = pos[1];
         posToTroop[posY][posX] = null;
-        ArrayList<int[]> posList = attackedTroop.getMyTeam()?myPositions:enemyPositions;
+        ArrayList<int[]> posList = getMyTeam()?myPositions:enemyPositions;
         posList.remove(pos);
     }
 

@@ -16,7 +16,7 @@ public class WaitingForPlayersDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
         LayoutInflater inflater = fragment.getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_waiting_for_players,null));
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         dialog = builder.create();
         dialog.show();
     }

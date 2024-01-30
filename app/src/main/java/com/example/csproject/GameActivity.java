@@ -41,6 +41,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public TextView resignIcon;
     public Troop selectedTroop;
     public boolean turn;
+    public ChildEventListener moveListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,18 +138,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if(view==resignIcon)
         {
             ResignDialog resignDialog = new ResignDialog(GameActivity.this);
-            resignDialog.startResignDialog(resignIcon);
+            resignDialog.startResignDialog();
             return;
-        }//code is disabled for now
-//        int viewId = view.getId();
-//        for(int i=0;i<6;i++){//checks if what was pressed is a tile
-//            for(int j=0;j<6;j++){
-//                if(tilesPositions.get(viewId)!=null)
-//                {
-//                    gameClick(tilesPositions.get(viewId));
-//                }
-//            }
-//        }
+        }
+        int viewId = view.getId();
+        for(int i=0;i<6;i++){//checks if what was pressed is a tile
+            for(int j=0;j<6;j++){
+                if(tilesPositions.get(viewId)!=null)
+                {
+                    gameClick(tilesPositions.get(viewId));
+                }
+            }
+        }
+    }
+    public void resign()
+    {
+        gameRoom.child("move").setValue("resign");
+        endGame(false);
     }
     public void gameClick(int[] clickPos)
     {
@@ -165,11 +171,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         {
             if(clickedTroop==null)//the place you picked is empty
             {
+                int[] lastPos = selectedTroop.getPosition();
                 if(selectedTroop.moveTo(clickPos))//attempt to move the selected troop
                 {
-                    updateVisualsAfterMovement(selectedTroop);
+                    updateVisualsAfterMovement(selectedTroop,lastPos);
                     checkIfOnThrone(clickPos);
                     attackCycleVisualized();
+                    checkIfWinByDeath();
                     finishTurn(clickPos);
                 }
             }
@@ -180,14 +188,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     if(((Mage)selectedTroop).buffTroop(clickedTroop))//attempt to buff the clicked troop
                     {
                         attackCycleVisualized();
+                        checkIfWinByDeath();
                         finishTurn(clickPos);
                     }
                 }
             }
         }
     }
-
-    private void finishTurn(int[] clickPos)
+    public void checkIfWinByDeath()//checks if someone won by killing the other team, the guest wins if all are dead at the same time
+    {
+        ArrayList<int[]> hostPos = isHost?Troop.myPositions:Troop.enemyPositions;
+        ArrayList<int[]> guestPos = !isHost?Troop.myPositions:Troop.enemyPositions;
+        if(hostPos.isEmpty())
+            endGame(!isHost);
+        else if(guestPos.isEmpty())
+            endGame(isHost);
+    }
+    public void finishTurn(int[] clickPos)
     {
         String troopId = selectedTroop.getId();
         String yx = ""+ clickPos[0]+ clickPos[1];
@@ -200,11 +217,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void attackCycleVisualized()
     {
         Troop.attackCycle();
-        //update visuals after attack
+        for(Troop troop:Troop.troopMap.values())
+        {
+            if(!troop.getAlive())
+            {
+                int[] deadPos = troop.getPosition();
+                tiles[deadPos[0]][deadPos[1]].setBackground(Drawable.createFromPath("@drawable/custom_view_black_border"));
+            }
+        }
     }
-    public void updateVisualsAfterMovement(Troop movedTroop)
+    public void updateVisualsAfterMovement(Troop movedTroop,int[] oldPos)
     {
-        //updates the board after a troop is moved
+        tiles[oldPos[0]][oldPos[1]].setBackground(Drawable.createFromPath("@drawable/custom_view_black_border"));
+        String troopType = movedTroop.getType();
+        String teamId = movedTroop.getMyTeam()?"":"enemy_";
+        int[] newPos = movedTroop.getPosition();
+        tiles[newPos[0]][newPos[1]].setBackground(Drawable.createFromPath("@drawable/figure_"+teamId+troopType));
     }
     public void checkIfOnThrone(int[] pos)//checks if the moved troop has got on the throne
     {
@@ -215,8 +243,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void endGame(boolean winner)
     {
-        //ends the game, winner is true if i am the winner and false if enemy
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 6; j++) {
+                tiles[i][j].setBackground(null);
+                tiles[i][j].setClickable(false);
+            }
+        }
+        updateUserWins(winner);
+        gameRoom.child("move").removeEventListener(moveListener);
+        GameEndDialog gameEndDialog = new GameEndDialog(GameActivity.this);
+        gameEndDialog.startGameEndDialog(winner);
     }
+
+    private void updateUserWins(boolean winner)
+    {
+        String uId = mAuth.getCurrentUser().getUid();
+        int score = winner?1:0;
+        CommonFunctions.getUserValues(database,mAuth,userValues->
+        {
+            int wins = Integer.parseInt(userValues[3]);
+            database.getReference("users/"+uId).child("wins").setValue((wins+score)+"");
+        });
+    }
+
     public void enemyMove(Troop enemyTroop,int[] newPos)
     {
         Troop movePositionTroop = Troop.posToTroop[newPos[0]][newPos[1]];
@@ -224,8 +273,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             ((Mage)enemyTroop).buffTroop(movePositionTroop);
 
         else {//just move the troop
+            int[] oldPos = enemyTroop.getPosition();
             enemyTroop.moveTo(newPos);
-            updateVisualsAfterMovement(enemyTroop);
+            updateVisualsAfterMovement(enemyTroop,oldPos);
             checkIfOnThrone(newPos);
         }
         attackCycleVisualized();
@@ -233,7 +283,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void readMovesFromGameRoom()//gets the move the other person did
     {
-        gameRoom.child("move").addChildEventListener(new ChildEventListener() {
+        moveListener = gameRoom.child("move").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {onChildChanged(snapshot,previousChildName);}
 
@@ -241,6 +291,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
                 String moveValue = snapshot.getValue().toString();
+                if(moveValue.equals("resign"))
+                    endGame(true);
                 String movedTroopId = moveValue.substring(0,2);
                 String movedTroopPos = moveValue.substring(4,5);
                 String reversedTroopId = "e"+movedTroopId.substring(1);//replaces id from other players screen to the corresponding one in this screen

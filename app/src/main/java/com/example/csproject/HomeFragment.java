@@ -62,8 +62,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view)
     {
         if (view == play) {
-            getActivity().startActivity(new Intent(getActivity(), GameActivity.class));
-//            gameSetUpManager();
+//            getActivity().startActivity(new Intent(getActivity(), GameActivity.class));
+            gameSetUpManager();
         }
     }
 

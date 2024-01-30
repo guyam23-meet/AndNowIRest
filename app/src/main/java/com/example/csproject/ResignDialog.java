@@ -14,7 +14,7 @@ public class ResignDialog implements View.OnClickListener{
     public TextView resignNo;
     ResignDialog(Activity myActivity) {activity = myActivity;}
 
-    void startResignDialog(View view)
+    void startResignDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -39,7 +39,7 @@ public class ResignDialog implements View.OnClickListener{
             closeResignDialog();
         if(view==resignYes)
         {
-
+            ((GameActivity)activity).resign();
         }
     }
 }
