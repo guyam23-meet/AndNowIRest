@@ -26,6 +26,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public Button play;
     public FirebaseAuth mAuth;
     public FirebaseDatabase database;
+    public boolean eventListenerHandler;
+    public ValueEventListener hostWaitingListener;
 
     @Nullable
     @Override
@@ -63,6 +65,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         if (view == play) {
             gameSetUpManager();
+            play.setClickable(false);
         }
     }
 
@@ -70,7 +73,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void gameSetUpManager()
     {
         DatabaseReference games = database.getReference("games");
-        games.addValueEventListener(new ValueEventListener() {
+        games.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
@@ -90,6 +93,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+
     }
     public void joinGame(DatabaseReference room)
     {
@@ -100,24 +104,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             room.child("guest").setValue(guestName);
             room.child("guest_placement").setValue(""+(2*guestWins-guestGamesPlayed));
-
-            Intent i = new Intent(getActivity(), GameActivity.class).putExtra("roomRef","games/"+room.getKey());
-            getActivity().startActivity(i);
+            Bundle bundle = new Bundle();
+            bundle.putString("roomRef","games/"+room.getKey());
+            Intent i = new Intent(getActivity(), GameActivity.class).putExtras(bundle);
+            startActivity(i);
         });
+
     }
     public void openGame(DatabaseReference games)
     {
         CommonFunctions.getUserValues(database, mAuth, userValues ->
         {
-            String hostEmail = userValues[1];
+            String hostId = userValues[0];
             String hostName = userValues[2];
             int hostWins = Integer.valueOf(userValues[3]);
             int hostGamesPlayed = Integer.valueOf(userValues[4]);
 
-            DatabaseReference room = games.child(hostEmail);
+            DatabaseReference room = games.child(hostId);
 
             room.child("host").setValue(hostName);
-            room.child("turn").setValue(true);
             room.child("host_placement").setValue(""+(2*hostWins-hostGamesPlayed));
 
             waitForPlayers(room);
@@ -125,20 +130,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
     public void waitForPlayers(DatabaseReference room)
     {
-        WaitingForPlayersDialog waitDialog = new WaitingForPlayersDialog(HomeFragment.this);
+        WaitingForPlayersDialog waitDialog = new WaitingForPlayersDialog(HomeFragment.this,room);
         waitDialog.startWaitingDialog();
-        room.addValueEventListener(new ValueEventListener() {
+        eventListenerHandler = false;
+        hostWaitingListener = new ValueEventListener() {//this needs to be accessed by cancel
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
+                if(!eventListenerHandler) {
+                    eventListenerHandler  = true;
+                    return;
+                }
                 waitDialog.closeWaitingDialog();
                 Intent i = new Intent(getActivity(), GameActivity.class).putExtra("roomRef","games/"+room.getKey());
                 getActivity().startActivity(i);
+                room.removeEventListener(this);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-        });
+        };
+        room.addValueEventListener(hostWaitingListener);
     }
     //end game functions
-
+    public void cancelGame(DatabaseReference gameRoom)
+    {
+        gameRoom.removeEventListener(hostWaitingListener);
+        CommonFunctions.removeGameRoom(gameRoom);
+        play.setClickable(true);
+    }
 }

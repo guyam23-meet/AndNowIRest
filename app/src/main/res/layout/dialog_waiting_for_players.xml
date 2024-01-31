@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:paddingHorizontal="100dp"
-    android:paddingVertical="50dp">
+    android:layout_width="300dp"
+    android:layout_height="150dp"
+    android:gravity="center">
 
     <ProgressBar
         android:id="@+id/loading_wait"
@@ -17,5 +15,16 @@
         android:id="@+id/waiting_for_players"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Waiting for players..." />
+        android:text="Waiting for players..."
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/cancel_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cancel game"
+        android:textColor="@color/Chilli_Pepper"
+        android:textSize="10dp"
+        android:layout_marginBottom="15dp"/>
 </LinearLayout>

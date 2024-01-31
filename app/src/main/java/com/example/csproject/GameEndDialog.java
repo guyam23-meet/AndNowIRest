@@ -20,7 +20,7 @@ public class GameEndDialog implements View.OnClickListener{
             LayoutInflater inflater = activity.getLayoutInflater();
             View layout = inflater.inflate(R.layout.dialog_game_end, null);
             winnerText = layout.findViewById(R.id.winner);
-            winnerText.setText("You"+(winner?"Won":"Lost"));
+            winnerText.setText("You "+(winner?"Won":"Lost"));
             backToHomePage = layout.findViewById(R.id.back_to_home);
             backToHomePage.setOnClickListener(this);
             builder.setView(layout);
@@ -33,9 +33,9 @@ public class GameEndDialog implements View.OnClickListener{
         @Override
         public void onClick(View view)
         {
-            if(view==backToHomePage)
+            if(view==backToHomePage){
                 closeResignDialog();
-                view.getContext().startActivity(new Intent(view.getContext(),HomePageActivity.class));
+                activity.startActivity(new Intent(activity,HomePageActivity.class));}
         }
 }
 

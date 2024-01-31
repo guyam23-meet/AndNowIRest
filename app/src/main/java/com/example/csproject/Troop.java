@@ -1,6 +1,11 @@
 package com.example.csproject;
 
+import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
+
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,14 +27,21 @@ public class Troop {
     public static Troop[][] posToTroop = new Troop[6][6];
     public static ArrayList<int[]> myPositions = new ArrayList<>();
     public static ArrayList<int[]> enemyPositions = new ArrayList<>();
+    private Activity activity;
 
-    public Troop(String type, String id, Boolean myTeam, int[] position)
+    public void setImageSRC(Drawable imageSRC)
+    {
+        this.imageSRC = imageSRC;
+    }
+
+    public Troop(String type, String id, Boolean myTeam, int[] position,Activity activity)
     {
         troopMap.put(id, this);
         posToTroop[position[0]][position[1]] = this;
         ArrayList<int[]> posList = myTeam ? myPositions : enemyPositions;
         posList.add(position);
 
+        this.activity = activity;
         this.type = type;
         this.isAlive = true;
         this.isMaged = false;
@@ -42,28 +54,28 @@ public class Troop {
                 this.attackRange = 1;
                 this.dmg = 2;
                 this.hp = 8;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "swordsman");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam? R.drawable.figure_swordsman:R.drawable.figure_enemy_swordsman);
                 break;
             case "knight":
                 this.movement = 1;
                 this.attackRange = 1;
                 this.dmg = 3;
                 this.hp = 11;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "knight");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_knight:R.drawable.figure_enemy_knight);
                 break;
             case "archer":
                 this.movement = 1;
                 this.attackRange = 2;
                 this.dmg = 2;
                 this.hp = 6;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "archer");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_archer:R.drawable.figure_enemy_archer);
                 break;
             case "mage":
                 this.movement = 1;
                 this.attackRange = 1;
                 this.dmg = 0;
                 this.hp = 6;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "mage");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_mage:R.drawable.figure_enemy_mage);
                 break;
         }
     }

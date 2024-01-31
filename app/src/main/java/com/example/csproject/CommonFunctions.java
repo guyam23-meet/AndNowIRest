@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.EventListener;
+
 public class CommonFunctions {
     //takes a database and the authentication and returns an array of Strings where:
     //0 - userId
@@ -44,37 +46,16 @@ public class CommonFunctions {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-
         });
-
     }
-
-    public static void getGameRoomValues(DatabaseReference gameRoom, ICallBack iCallBack)
+    public static void removeGameRoom(DatabaseReference gameRoom)
     {
-        String[] values = new String[7];
-        values[0] = gameRoom.getKey();
-        gameRoom.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                values[1] = snapshot.child("host").getValue().toString();
-                values[2] = snapshot.child("host_placement").getValue().toString();
-                values[3] = snapshot.child("guest").getValue().toString();
-                values[4] = snapshot.child("guest_placement").getValue().toString();
-                values[5] = snapshot.child("turn").getValue().toString();
-                values[6] = snapshot.child("move").getValue().toString();
-                iCallBack.onCallBack(values);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+        gameRoom.removeValue().addOnCompleteListener(task -> {
+            if(!task.isSuccessful())
+                removeGameRoom(gameRoom);
         });
+    }
 
-    }
-    public static Boolean checkIsHost(DatabaseReference gameRoom,FirebaseAuth mAuth)
-    {
-        return gameRoom.getKey() == mAuth.getCurrentUser().getEmail();
-    }
 
     //fullscreen functions
     public static int hideSystemBars()
