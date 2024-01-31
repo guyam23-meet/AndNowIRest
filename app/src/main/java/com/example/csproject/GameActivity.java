@@ -77,7 +77,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void visualSelection(Troop selectedTroop)
     {
-        Drawable[] layers = {selectedTroop.getImageSRC(), new ColorDrawable(getColor(R.color.selected))};
+        Drawable[] layers = {getDrawable(R.drawable.selected_background),selectedTroop.getImageSRC()};
         LayerDrawable layerDrawable = new LayerDrawable(layers);
         int[] troopPos = selectedTroop.getPosition();
         AppCompatButton tile = tiles[troopPos[0]][troopPos[1]];
@@ -179,12 +179,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         int viewId = view.getId();
-        for(int i = 0; i < 6; i++) {//checks if what was pressed is a tile
+        if(turn){
+            for(int i = 0; i < 6; i++) {//checks if what was pressed is a tile
             for(int j = 0; j < 6; j++) {
                 if(tilesPositions.get(viewId) != null) {
                     gameClick(tilesPositions.get(viewId));
                 }
-            }
+            }}
         }
     }
 
@@ -196,8 +197,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void gameClick(int[] clickPos)
     {
-        if(!turn)
-            return;
+
         Troop clickedTroop = Troop.posToTroop[clickPos[0]][clickPos[1]];//clicked troop
 
         if(selectedTroop == null)//if there isnt a selected troop
@@ -222,16 +222,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else if(clickedTroop.getMyTeam() && selectedTroop instanceof Mage && !(clickedTroop instanceof Mage))//if the clicked troop is my troop and not a mage
-            if(((Mage) selectedTroop).buffTroop(clickedTroop))//attempt to buff the clicked troop
+            if(((Mage) selectedTroop).buffTroop(clickedTroop))
+            {//attempt to buff the clicked troop
                 visualizeBuff(clickedTroop);
                 finishTurn(clickPos);
+            }
         removeVisualSelection(selectedTroop, hasMoved);
         selectedTroop = null;
     }
 
     private void visualizeBuff(Troop clickedTroop)
     {
-        Drawable[] layers = {clickedTroop.getImageSRC(), new ColorDrawable(getColor(R.color.buffed))};
+        Drawable[] layers = {clickedTroop.getImageSRC(), getDrawable(R.drawable.buffed_background)};
         LayerDrawable layerDrawable = new LayerDrawable(layers);
         clickedTroop.setImageSRC(layerDrawable);
         int[] troopPos = clickedTroop.getPosition();
