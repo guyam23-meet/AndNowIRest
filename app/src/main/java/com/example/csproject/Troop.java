@@ -1,13 +1,12 @@
 package com.example.csproject;
 
-import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
-
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Troop {
@@ -27,21 +26,16 @@ public class Troop {
     public static Troop[][] posToTroop = new Troop[6][6];
     public static ArrayList<int[]> myPositions = new ArrayList<>();
     public static ArrayList<int[]> enemyPositions = new ArrayList<>();
-    private Activity activity;
 
-    public void setImageSRC(Drawable imageSRC)
-    {
-        this.imageSRC = imageSRC;
-    }
 
-    public Troop(String type, String id, Boolean myTeam, int[] position,Activity activity)
+
+    public Troop(String type, String id, Boolean myTeam, int[] position, Activity activity)
     {
         troopMap.put(id, this);
         posToTroop[position[0]][position[1]] = this;
         ArrayList<int[]> posList = myTeam ? myPositions : enemyPositions;
         posList.add(position);
 
-        this.activity = activity;
         this.type = type;
         this.isAlive = true;
         this.isMaged = false;
@@ -118,29 +112,18 @@ public class Troop {
                     posList.add(new int[]{posY + i, posX + j});//adds the corners
                     continue;
                 }
-                if((posToTroop[posY + i * 2][posX + j * 2] == null)&&//is empty
-                        !(posY + i*2 > 5 || posY + i*2 < 0 || posX + j*2 > 5 || posY + j*2 < 0))//in bounds
+                if(!(posY + i*2 > 5 || posY + i*2 < 0 || posX + j*2 > 5 || posY + j*2 < 0)&&//in bounds
+                        (posToTroop[posY + i * 2][posX + j * 2] == null))//is empty
                     posList.add(new int[]{posY + i * 2, posX + j * 2});
             }
         }
         return posList;
     }
 
-    public boolean moveTo(int[] position)//only moves if its within movement options and returns true if it had moved
+    public void moveTo(int[] position)//only moves if its within movement options and returns true if it had moved
     {
-        if(!getMyTeam()) {//you already got a legal move from the database
-            updateStaticsAfterMovement(position);
-            setPosition(position);
-            return true;
-        }
-        for(int[] moveOption : getMovingOptions()) {//check if the move is legal
-            if(position == moveOption) {
-                updateStaticsAfterMovement(position);
-                setPosition(position);
-                return true;
-            }
-        }
-        return false;
+        updateStaticsAfterMovement(position);
+        setPosition(position);
     }
 
     private void updateStaticsAfterMovement(int[] position)//updates the lists of position to troop and the team positions list
@@ -263,6 +246,10 @@ public class Troop {
     public int[] getPosition()
     {
         return position;
+    }
+    public void setImageSRC(Drawable imageSRC)
+    {
+        this.imageSRC = imageSRC;
     }
 
     public boolean getMaged()

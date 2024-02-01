@@ -45,6 +45,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public TextView myPlacement;
     public TextView resignIcon;
     public Troop selectedTroop;
+    public ArrayList<int[]> movementOption;
     public boolean turn;
     public ChildEventListener moveListener;
 
@@ -179,14 +180,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         int viewId = view.getId();
-        if(turn){
-            for(int i = 0; i < 6; i++) {//checks if what was pressed is a tile
-            for(int j = 0; j < 6; j++) {
-                if(tilesPositions.get(viewId) != null) {
-                    gameClick(tilesPositions.get(viewId));
-                }
-            }}
-        }
+        if(turn && tilesPositions.get(viewId) != null)//if its your turn, checks if you pressed a tile
+            gameClick(tilesPositions.get(viewId));
     }
 
     public void resign()
@@ -197,43 +192,75 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void gameClick(int[] clickPos)
     {
-
         Troop clickedTroop = Troop.posToTroop[clickPos[0]][clickPos[1]];//clicked troop
 
-        if(selectedTroop == null)//if there isnt a selected troop
+        if(selectedTroop == null)//if there isn't a selected troop
         {
             if(clickedTroop != null && clickedTroop.getMyTeam()) {//and you pressed on a one of your troops
                 selectedTroop = clickedTroop;//select it
+                movementOption = selectedTroop.getMovingOptions();
                 visualSelection(selectedTroop);
+                visualMoveOptions(movementOption);
             }
             return;
         }
         //there is a troop selected
         boolean hasMoved = false;
-        if(clickedTroop == null)//the place you picked is empty
-        {
-            int[] lastPos = selectedTroop.getPosition();
-            if(selectedTroop.moveTo(clickPos))//attempt to move the selected troop
-            {
-                hasMoved = true;
-                updateVisualsAfterMovement(selectedTroop, lastPos);
-                checkIfOnThrone(true, clickPos);
-                finishTurn(clickPos);
+        boolean isMoveOption = false;
+        for(int[] moveOption:movementOption){//checks if a moveOption was clicked
+            if(Arrays.equals(moveOption,clickPos)) {
+                isMoveOption = true;
+                break;
             }
         }
-        else if(clickedTroop.getMyTeam() && selectedTroop instanceof Mage && !(clickedTroop instanceof Mage))//if the clicked troop is my troop and not a mage
+        if(isMoveOption)//the place you picked is empty
+        {
+            int[] lastPos = selectedTroop.getPosition();
+            selectedTroop.moveTo(clickPos);
+            hasMoved = true;
+            updateVisualsAfterMovement(selectedTroop, lastPos);
+            checkIfOnThrone(true, clickPos);
+            finishTurn(clickPos);
+        }
+        else if(clickedTroop!=null &&
+                clickedTroop.getMyTeam() &&
+                selectedTroop instanceof Mage &&
+                !(clickedTroop instanceof Mage)){//if the clicked troop is my troop and not a mage
+
             if(((Mage) selectedTroop).buffTroop(clickedTroop))
             {//attempt to buff the clicked troop
                 visualizeBuff(clickedTroop);
                 finishTurn(clickPos);
             }
+        }
         removeVisualSelection(selectedTroop, hasMoved);
+        removeVisualMoveOption(movementOption, clickPos, hasMoved);
         selectedTroop = null;
+        movementOption = null;
+    }
+
+    private void visualMoveOptions(ArrayList<int[]> movementOptions)
+    {
+        for(int[] pos: movementOptions) {
+            tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.move_option);
+        }
+    }
+    private void removeVisualMoveOption(ArrayList<int[]> moveOptions,int[] newPos,boolean hasMoved)
+    {
+        for(int[] pos: moveOptions)
+        {
+            if(hasMoved && Arrays.equals(pos, newPos))
+                continue;
+            if(Arrays.equals(pos,new int[] {0,5})||Arrays.equals(pos,new int[] {5,0})) {
+                tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.figure_throne);
+            }
+            tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.custom_view_black_border);
+        }
     }
 
     private void visualizeBuff(Troop clickedTroop)
     {
-        Drawable[] layers = {clickedTroop.getImageSRC(), getDrawable(R.drawable.buffed_background)};
+        Drawable[] layers = {getDrawable(R.drawable.buffed_background),clickedTroop.getImageSRC()};
         LayerDrawable layerDrawable = new LayerDrawable(layers);
         clickedTroop.setImageSRC(layerDrawable);
         int[] troopPos = clickedTroop.getPosition();
@@ -282,14 +309,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for(Troop troop : Troop.troopMap.values()) {
             if(!troop.getAlive()) {
                 int[] deadPos = troop.getPosition();
-                tiles[deadPos[0]][deadPos[1]].setBackground(Drawable.createFromPath("@drawable/custom_view_black_border"));
+                tiles[deadPos[0]][deadPos[1]].setBackground(getDrawable(R.drawable.custom_view_black_border));
             }
         }
     }
 
     public void updateVisualsAfterMovement(Troop movedTroop, int[] oldPos)
     {
-        tiles[oldPos[0]][oldPos[1]].setBackground(Drawable.createFromPath("@drawable/custom_view_black_border"));
+        tiles[oldPos[0]][oldPos[1]].setBackground(getDrawable(R.drawable.custom_view_black_border));
         int[] newPos = movedTroop.getPosition();
         tiles[newPos[0]][newPos[1]].setBackground(movedTroop.getImageSRC());
     }
@@ -311,8 +338,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         updateUserWins(winner);
-        gameRoom.child("move").removeEventListener(moveListener);
-        CommonFunctions.removeGameRoom(gameRoom);
+        if(winner)
+        {
+            gameRoom.child("move").removeEventListener(moveListener);
+            CommonFunctions.removeGameRoom(gameRoom);
+        }
         GameEndDialog gameEndDialog = new GameEndDialog(GameActivity.this);
         gameEndDialog.startGameEndDialog(winner);
     }
@@ -347,43 +377,34 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void readMovesFromGameRoom()//gets the move the other person did
     {
-        moveListener = gameRoom.child("move").addChildEventListener(new ChildEventListener() {
+        moveListener = gameRoom.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
-            {
-                onChildChanged(snapshot, previousChildName);
-            }
-
+            {onChildChanged(snapshot, previousChildName);}
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                String moveValue = snapshot.getValue().toString();
-                if(moveValue.equals("resign"))
+                if(!snapshot.hasChild("move"))//both handles unexpected calls to DB and disables the function when it is declared
+                    return;
+                String moveValue = snapshot.child("move").getValue().toString();
+                if(moveValue.equals("resign")) {
                     endGame(true);
-                String movedTroopId = moveValue.substring(0, 2);
+                    return;
+                }
                 String movedTroopPos = moveValue.substring(4, 5);
-                String reversedTroopId = "e" + movedTroopId.substring(1);//replaces id from other players screen to the corresponding one in this screen
+                String reversedTroopId = "e" + moveValue.substring(1, 2);;//replaces id from other players screen to the corresponding one in this screen
                 int y = Character.getNumericValue(movedTroopPos.charAt(0));
                 int x = Character.getNumericValue(movedTroopPos.charAt(1));
                 int[] reversedPos = new int[]{5 - y, 5 - x};//replaces position from other players screen to the corresponding one in this screen
                 Troop enemyTroop = Troop.troopMap.get(reversedTroopId);
                 enemyMove(enemyTroop, reversedPos);
             }
-
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot)
-            {
-            }
-
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
-            {
-            }
-
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
@@ -413,11 +434,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         tiles[5][0].setBackgroundResource(R.drawable.figure_throne);
         tiles[0][5].setBackgroundResource(R.drawable.figure_throne);
-        ;
     }
 
     @Override
-    public void onBackPressed()
-    {
-    }//disables back press
+    public void onBackPressed() {}//disables back press
 }
