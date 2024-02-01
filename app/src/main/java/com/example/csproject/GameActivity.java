@@ -251,11 +251,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         {
             if(hasMoved && Arrays.equals(pos, newPos))
                 continue;
-            if(Arrays.equals(pos,new int[] {0,5})||Arrays.equals(pos,new int[] {5,0})) {
-                tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.figure_throne);
-            }
-            tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.custom_view_black_border);
+            returnBackGroundToOrigin(pos);
         }
+    }
+
+    private void returnBackGroundToOrigin(int[] pos)
+    {
+        if(Arrays.equals(pos,new int[] {0,5})||Arrays.equals(pos,new int[] {5,0})) {
+            tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.figure_throne);
+        } else
+            tiles[pos[0]][pos[1]].setBackground(null);
     }
 
     private void visualizeBuff(Troop clickedTroop)
@@ -309,14 +314,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for(Troop troop : Troop.troopMap.values()) {
             if(!troop.getAlive()) {
                 int[] deadPos = troop.getPosition();
-                tiles[deadPos[0]][deadPos[1]].setBackground(getDrawable(R.drawable.custom_view_black_border));
+                returnBackGroundToOrigin(deadPos);
             }
         }
     }
 
     public void updateVisualsAfterMovement(Troop movedTroop, int[] oldPos)
     {
-        tiles[oldPos[0]][oldPos[1]].setBackground(getDrawable(R.drawable.custom_view_black_border));
+        returnBackGroundToOrigin(oldPos);
         int[] newPos = movedTroop.getPosition();
         tiles[newPos[0]][newPos[1]].setBackground(movedTroop.getImageSRC());
     }

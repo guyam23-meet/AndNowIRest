@@ -112,7 +112,7 @@ public class Troop {
                     posList.add(new int[]{posY + i, posX + j});//adds the corners
                     continue;
                 }
-                if(!(posY + i*2 > 5 || posY + i*2 < 0 || posX + j*2 > 5 || posY + j*2 < 0)&&//in bounds
+                if(!(posY + i*2 > 5 || posY + i*2 < 0 || posX + j*2 > 5 || posX + j*2 < 0)&&//in bounds
                         (posToTroop[posY + i * 2][posX + j * 2] == null))//is empty
                     posList.add(new int[]{posY + i * 2, posX + j * 2});
             }
