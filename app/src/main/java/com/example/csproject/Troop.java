@@ -169,11 +169,8 @@ public class Troop {
     {
         attackedTroop.setHp(attackedTroop.getHp()-getDmg());
 
-        if(attackedTroop.getHp()<=0)
+        if(attackedTroop.getHp()<=0){//set dead
             attackedTroop.setAlive(false);
-
-        if(!attackedTroop.getAlive())
-        {
             attackedTroop.updateStaticsAfterDeath();
         }
     }
@@ -181,9 +178,7 @@ public class Troop {
     private void updateStaticsAfterDeath()
     {
         int[] pos = getPosition();
-        int posY = pos[0];
-        int posX = pos[1];
-        posToTroop[posY][posX] = null;
+        posToTroop[pos[0]][pos[1]] = null;
         ArrayList<int[]> posList = getMyTeam()?myPositions:enemyPositions;
         posList.remove(pos);
     }

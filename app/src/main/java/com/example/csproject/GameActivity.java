@@ -47,8 +47,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public Troop selectedTroop;
     public ArrayList<int[]> movementOption;
     public boolean turn;
-    public ChildEventListener moveListener;
-
+    public ValueEventListener moveListener;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -175,6 +174,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view)
     {
         if(view == resignIcon) {
+            resignIcon.setClickable(false);//prevents double clicking
             ResignDialog resignDialog = new ResignDialog(GameActivity.this);
             resignDialog.startResignDialog();
             return;
@@ -183,10 +183,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if(turn && tilesPositions.get(viewId) != null)//if its your turn, checks if you pressed a tile
             gameClick(tilesPositions.get(viewId));
     }
-
     public void resign()
     {
-        gameRoom.child("move").setValue("resign");
+        gameRoom.child("move").setValue("resign_"+(isHost?'h':'g'));
         endGame(false);
     }
 
@@ -342,10 +341,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 tiles[i][j].setClickable(false);
             }
         }
+        gameBoard.setBackgroundResource(R.drawable.background_pixelated);
         updateUserWins(winner);
         if(winner)
         {
-            gameRoom.child("move").removeEventListener(moveListener);
+            gameRoom.removeEventListener(moveListener);
             CommonFunctions.removeGameRoom(gameRoom);
         }
         GameEndDialog gameEndDialog = new GameEndDialog(GameActivity.this);
@@ -367,8 +367,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void enemyMove(Troop enemyTroop, int[] newPos)
     {
         Troop movePositionTroop = Troop.posToTroop[newPos[0]][newPos[1]];
-        if(movePositionTroop != null)//the troop is a mage that buffed an enemy troop in the given position
+        if(movePositionTroop != null){//the troop is a mage that buffed an enemy troop in the given position
             ((Mage) enemyTroop).buffTroop(movePositionTroop);
+            visualizeBuff(movePositionTroop);
+        }
 
         else {//just move the troop
             int[] oldPos = enemyTroop.getPosition();
@@ -382,32 +384,30 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void readMovesFromGameRoom()//gets the move the other person did
     {
-        moveListener = gameRoom.addChildEventListener(new ChildEventListener() {
+        moveListener = gameRoom.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
-            {onChildChanged(snapshot, previousChildName);}
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 if(!snapshot.hasChild("move"))//both handles unexpected calls to DB and disables the function when it is declared
                     return;
                 String moveValue = snapshot.child("move").getValue().toString();
-                if(moveValue.equals("resign")) {
+
+                char isHostId = isHost?'h':'g';
+                if(isHostId==moveValue.charAt(7))//check if its your action
+                    return;
+
+                if(moveValue.startsWith("resign")) {
                     endGame(true);
                     return;
                 }
-                String movedTroopPos = moveValue.substring(4, 5);
-                String reversedTroopId = "e" + moveValue.substring(1, 2);;//replaces id from other players screen to the corresponding one in this screen
+                String movedTroopPos = moveValue.substring(4, 6);
+                String reversedTroopId = "e" + moveValue.substring(1, 3);;//replaces id from other players screen to the corresponding one in this screen
                 int y = Character.getNumericValue(movedTroopPos.charAt(0));
                 int x = Character.getNumericValue(movedTroopPos.charAt(1));
                 int[] reversedPos = new int[]{5 - y, 5 - x};//replaces position from other players screen to the corresponding one in this screen
                 Troop enemyTroop = Troop.troopMap.get(reversedTroopId);
                 enemyMove(enemyTroop, reversedPos);
             }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
