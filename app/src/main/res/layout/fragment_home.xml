@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="#27C11B17"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layoutDirection="ltr">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+
 public class GameEndDialog implements View.OnClickListener{
         private Activity activity;
         private AlertDialog dialog;
@@ -35,7 +37,8 @@ public class GameEndDialog implements View.OnClickListener{
         {
             if(view==backToHomePage){
                 closeResignDialog();
-                activity.startActivity(new Intent(activity,HomePageActivity.class));}
+                activity.startActivity(new Intent(activity,HomePageActivity.class));
+            }
         }
 }
 

@@ -81,6 +81,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 {
                     for (DataSnapshot room: snapshot.getChildren())
                     {
+                        if(room.getKey()==mAuth.getCurrentUser().getUid())//prevents joining from same user another device
+                            return;
                         if (!room.hasChild("guest"))
                         {
                             joinGame(games.child(room.getKey()));

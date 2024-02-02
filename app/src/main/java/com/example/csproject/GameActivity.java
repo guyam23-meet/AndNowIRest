@@ -218,7 +218,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             selectedTroop.moveTo(clickPos);
             hasMoved = true;
             updateVisualsAfterMovement(selectedTroop, lastPos);
-            checkIfOnThrone(true, clickPos);
             finishTurn(clickPos);
         }
         else if(clickedTroop!=null &&
@@ -293,9 +292,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void finishTurn(int[] clickPos)
     {
+        submitMoveToDatabase(clickPos);
         attackCycleVisualized();
         checkIfWinByDeath();
-        submitMoveToDatabase(clickPos);
+        checkIfOnThrone(true, clickPos);
         turn = false;
     }
 
@@ -343,15 +343,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         gameBoard.setBackgroundResource(R.drawable.background_pixelated);
         updateUserWins(winner);
+        gameRoom.removeEventListener(moveListener);
         if(winner)
-        {
-            gameRoom.removeEventListener(moveListener);
             CommonFunctions.removeGameRoom(gameRoom);
-        }
         GameEndDialog gameEndDialog = new GameEndDialog(GameActivity.this);
         gameEndDialog.startGameEndDialog(winner);
     }
-
 
     private void updateUserWins(boolean winner)
     {

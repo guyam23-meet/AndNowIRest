@@ -15,10 +15,10 @@ public class Troop {
     private int attackRange;
     private int dmg;
     private int hp;
-    private String type;
-    private String id;
+    private final String type;
+    private final String id;
     private Drawable imageSRC;
-    private boolean myTeam;
+    private final boolean myTeam;
     private int[] position;
     private boolean isMaged;
     private boolean isAlive;
@@ -88,6 +88,15 @@ public class Troop {
         for(Troop troop:troopMap.values())
             if(troop.getAlive())
                 troop.attack();
+        for(Troop troop:troopMap.values())
+        {
+            if(troop.getHp()<=0){//set dead
+                if(troop.getAlive()){
+                    troop.setAlive(false);
+                    troop.updateStaticsAfterDeath();
+                }
+            }
+        }
     }
     public ArrayList<int[]> getMovingOptions()//returns all the positions the troop can move to
     {
@@ -98,7 +107,7 @@ public class Troop {
             for(int j = -1; j <= 1; j++)
             {
                 if((i == 0 && j == 0) ||//your current position
-                        posY + i > 5 || posY + i < 0 || posX + j > 5 || posY + j < 0 ||//out of bounds
+                        posY + i > 5 || posY + i < 0 || posX + j > 5 || posX + j < 0 ||//out of bounds
                         posToTroop[posY + i][posX + j] != null)//is taken by another troop
                     continue;
 
@@ -157,7 +166,7 @@ public class Troop {
         for(int[] target : targetList) {
             for(int[] troopPos : posList)
             {
-                if(target == troopPos) {
+                if(Arrays.equals(target,troopPos)) {
                     attackableTroops.add(posToTroop[troopPos[0]][troopPos[1]]);
                 }
             }
@@ -168,11 +177,6 @@ public class Troop {
     public void attackTroop(Troop attackedTroop)//reduces the hp and deals with troop death
     {
         attackedTroop.setHp(attackedTroop.getHp()-getDmg());
-
-        if(attackedTroop.getHp()<=0){//set dead
-            attackedTroop.setAlive(false);
-            attackedTroop.updateStaticsAfterDeath();
-        }
     }
 
     private void updateStaticsAfterDeath()

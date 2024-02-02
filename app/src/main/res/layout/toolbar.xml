@@ -6,7 +6,8 @@
     android:background="@color/Chilli_Pepper"
     android:elevation="4dp"
     android:orientation="horizontal"
-    app:titleTextColor="@color/white">
+    app:titleTextColor="@color/white"
+    android:layoutDirection="ltr">
 
     <TextView
         android:id="@+id/tv_toolbarTitle_activity_home"

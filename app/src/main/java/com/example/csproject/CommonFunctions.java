@@ -51,8 +51,8 @@ public class CommonFunctions {
     public static void removeGameRoom(DatabaseReference gameRoom)
     {
         gameRoom.removeValue().addOnCompleteListener(task -> {
-            if(!task.isSuccessful())
-                removeGameRoom(gameRoom);
+            if(gameRoom.getKey()!=null)
+                gameRoom.removeValue();
         });
     }
 
