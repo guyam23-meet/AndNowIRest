@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_00"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -79,9 +79,15 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/button_01"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+
+                <TextView
                     android:id="@+id/button_01"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -90,9 +96,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_00"
                     app:layout_constraintRight_toLeftOf="@+id/button_02"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_02"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -101,9 +112,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_01"
                     app:layout_constraintRight_toLeftOf="@+id/button_03"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_03"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -112,9 +128,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_02"
                     app:layout_constraintRight_toLeftOf="@id/button_04"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_04"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -123,9 +144,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_03"
                     app:layout_constraintRight_toLeftOf="@id/button_05"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_05"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -134,14 +160,19 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_04"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_10"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -150,9 +181,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/button_11"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_11"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -161,9 +197,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_10"
                     app:layout_constraintRight_toLeftOf="@+id/button_12"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_12"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -172,9 +213,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_11"
                     app:layout_constraintRight_toLeftOf="@+id/button_13"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_13"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -183,9 +229,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_12"
                     app:layout_constraintRight_toLeftOf="@id/button_14"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_14"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -194,9 +245,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_13"
                     app:layout_constraintRight_toLeftOf="@id/button_15"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_15"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -205,14 +261,19 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_14"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_20"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -221,9 +282,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/button_21"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_21"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -232,9 +298,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_20"
                     app:layout_constraintRight_toLeftOf="@+id/button_22"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_22"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -243,9 +314,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_21"
                     app:layout_constraintRight_toLeftOf="@+id/button_23"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_23"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -254,9 +330,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_22"
                     app:layout_constraintRight_toLeftOf="@id/button_24"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_24"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -265,9 +346,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_23"
                     app:layout_constraintRight_toLeftOf="@id/button_25"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_25"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -276,14 +362,19 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_24"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_30"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -292,9 +383,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/button_31"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_31"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -303,9 +399,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_30"
                     app:layout_constraintRight_toLeftOf="@+id/button_32"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_32"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -314,9 +415,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_31"
                     app:layout_constraintRight_toLeftOf="@+id/button_33"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_33"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -325,9 +431,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_32"
                     app:layout_constraintRight_toLeftOf="@id/button_34"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_34"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -336,9 +447,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_33"
                     app:layout_constraintRight_toLeftOf="@id/button_35"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_35"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -347,14 +463,19 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_34"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_40"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -363,9 +484,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/button_41"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_41"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -374,9 +500,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_40"
                     app:layout_constraintRight_toLeftOf="@+id/button_42"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_42"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -385,9 +516,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_41"
                     app:layout_constraintRight_toLeftOf="@+id/button_43"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_43"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -396,9 +532,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_42"
                     app:layout_constraintRight_toLeftOf="@id/button_44"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_44"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -407,9 +548,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_43"
                     app:layout_constraintRight_toLeftOf="@id/button_45"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_45"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -418,14 +564,19 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_44"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -434,9 +585,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/button_51"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_51"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -445,9 +601,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_50"
                     app:layout_constraintRight_toLeftOf="@+id/button_52"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_52"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -456,9 +617,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_51"
                     app:layout_constraintRight_toLeftOf="@+id/button_53"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_53"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -467,9 +633,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_52"
                     app:layout_constraintRight_toLeftOf="@id/button_54"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_54"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -478,9 +649,14 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_53"
                     app:layout_constraintRight_toLeftOf="@id/button_55"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <TextView
                     android:id="@+id/button_55"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -489,7 +665,12 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toRightOf="@+id/button_54"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text=""
+                    android:gravity="bottom|right"
+                    android:textColor="#A80000"
+                    android:textStyle="bold"
+                    android:textSize="11sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
         <!--my info-->

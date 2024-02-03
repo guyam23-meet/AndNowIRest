@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.EventListener;
 
 public class CommonFunctions {
+
     //takes a database and the authentication and returns an array of Strings where:
     //0 - userId
     //1 - email

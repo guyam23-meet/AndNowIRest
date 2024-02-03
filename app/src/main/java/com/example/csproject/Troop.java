@@ -83,20 +83,20 @@ public class Troop {
                 posToTroop[i][j] = null;
         }
     }
-    public static void attackCycle()
+    public static ArrayList<Troop> attackCycle()
     {
         for(Troop troop:troopMap.values())
-            if(troop.getAlive())
-                troop.attack();
+            troop.attack();
+        ArrayList<Troop> deadTroops = new ArrayList<>();
         for(Troop troop:troopMap.values())
         {
             if(troop.getHp()<=0){//set dead
-                if(troop.getAlive()){
-                    troop.setAlive(false);
-                    troop.updateStaticsAfterDeath();
-                }
+                deadTroops.add(troop);
+                troop.setAlive(false);
+                troop.updateStaticsAfterDeath();
             }
         }
+        return deadTroops;
     }
     public ArrayList<int[]> getMovingOptions()//returns all the positions the troop can move to
     {
@@ -198,7 +198,7 @@ public class Troop {
             {
                 if(!(i == j || i == -j || i == 0 || j == 0) ||//not diagonal or axis
                         (i == 0 && j == 0) ||//the same position as you
-                        (posY + i > 5 || posY + i < 0 || posX + j > 5 || posY + j < 0))//out of bounds
+                        (posY + i > 5 || posY + i < 0 || posX + j > 5 || posX + j < 0))//out of bounds
                     continue;
                 targetList.add(new int[]{posY + i, posX + j});
             }

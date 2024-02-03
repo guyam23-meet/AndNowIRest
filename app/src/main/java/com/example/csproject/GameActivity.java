@@ -3,14 +3,16 @@ package com.example.csproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,7 +37,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public FirebaseAuth mAuth;
     public FirebaseDatabase database;
     public LinearLayout gameBoard;
-    public AppCompatButton[][] tiles;
+    public TextView[][] tiles;
     public HashMap<Integer, int[]> tilesPositions;
     public DatabaseReference gameRoom;
     public Boolean isHost;
@@ -48,6 +50,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public ArrayList<int[]> movementOption;
     public boolean turn;
     public ValueEventListener moveListener;
+    public static final String hpSymbol = "❤";
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -80,7 +83,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Drawable[] layers = {getDrawable(R.drawable.selected_background),selectedTroop.getImageSRC()};
         LayerDrawable layerDrawable = new LayerDrawable(layers);
         int[] troopPos = selectedTroop.getPosition();
-        AppCompatButton tile = tiles[troopPos[0]][troopPos[1]];
+        TextView tile = tiles[troopPos[0]][troopPos[1]];
         tile.setBackground(layerDrawable);
     }
 
@@ -156,13 +159,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void setTilesAndPositions()
     {
         ConstraintLayout row;
-        AppCompatButton tile;
-        tiles = new AppCompatButton[6][6];
+        TextView tile;
+        tiles = new TextView[6][6];
         tilesPositions = new HashMap<>();
         for(int i = 0; i < 6; i++) {
             row = (ConstraintLayout) gameBoard.getChildAt(i);
             for(int j = 0; j < 6; j++) {
-                tile = (AppCompatButton) row.getChildAt(j);
+                tile = (TextView) row.getChildAt(j);
                 tiles[i][j] = tile;
                 tile.setOnClickListener(this);
                 tilesPositions.put(tile.getId(), new int[]{i, j});
@@ -259,6 +262,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             tiles[pos[0]][pos[1]].setBackgroundResource(R.drawable.figure_throne);
         } else
             tiles[pos[0]][pos[1]].setBackground(null);
+        tiles[pos[0]][pos[1]].setText("");
     }
 
     private void visualizeBuff(Troop clickedTroop)
@@ -267,7 +271,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         LayerDrawable layerDrawable = new LayerDrawable(layers);
         clickedTroop.setImageSRC(layerDrawable);
         int[] troopPos = clickedTroop.getPosition();
-        AppCompatButton tile = tiles[troopPos[0]][troopPos[1]];
+        TextView tile = tiles[troopPos[0]][troopPos[1]];
         tile.setBackground(layerDrawable);
     }
 
@@ -275,7 +279,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     {
         if(!hasMoved) {
             int[] pos = selectedTroop.getPosition();
-            AppCompatButton tile = tiles[pos[0]][pos[1]];
+            TextView tile = tiles[pos[0]][pos[1]];
             tile.setBackground(selectedTroop.getImageSRC());
         }
     }
@@ -309,12 +313,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void attackCycleVisualized()
     {
-        Troop.attackCycle();
+        ArrayList<Troop> deadTroops = Troop.attackCycle();
         for(Troop troop : Troop.troopMap.values()) {
-            if(!troop.getAlive()) {
-                int[] deadPos = troop.getPosition();
-                returnBackGroundToOrigin(deadPos);
-            }
+
+            int[] pos = troop.getPosition();
+            tiles[pos[0]][pos[1]].setText(hpSymbol+troop.getHp()+" ");
+        }
+        for(Troop dead: deadTroops)
+        {
+            int[] deadPos = dead.getPosition();
+            returnBackGroundToOrigin(deadPos);
+            Troop.troopMap.remove(dead.getId());
         }
     }
 
@@ -323,6 +332,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         returnBackGroundToOrigin(oldPos);
         int[] newPos = movedTroop.getPosition();
         tiles[newPos[0]][newPos[1]].setBackground(movedTroop.getImageSRC());
+        tiles[newPos[0]][newPos[1]].setText(hpSymbol+movedTroop.getHp()+" ");
     }
 
     public void checkIfOnThrone(boolean myTeam, int[] pos)//checks if the moved troop has got on the throne
@@ -338,6 +348,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for(int i = 0; i < 6; i++) {
             for(int j = 0; j < 6; j++) {
                 tiles[i][j].setBackground(null);
+                tiles[i][j].setText("");
                 tiles[i][j].setClickable(false);
             }
         }
@@ -432,7 +443,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         for(Troop troop : startingBoard) {
             int[] troopPos = troop.getPosition();
-            tiles[troopPos[0]][troopPos[1]].setBackground(troop.getImageSRC());
+            TextView tile = tiles[troopPos[0]][troopPos[1]];
+            tile.setBackground(troop.getImageSRC());
+            tile.setText(hpSymbol+troop.getHp()+" ");
         }
         tiles[5][0].setBackgroundResource(R.drawable.figure_throne);
         tiles[0][5].setBackgroundResource(R.drawable.figure_throne);
