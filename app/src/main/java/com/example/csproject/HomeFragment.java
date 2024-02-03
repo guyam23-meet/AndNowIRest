@@ -7,6 +7,7 @@ import static com.example.csproject.CommonFunctions.removeGameRoom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public TextView name;
     public TextView placement;
     public Button play;
-
+    public boolean isWaitingForPlayers;
     public boolean eventListenerHandler;
     public ValueEventListener hostWaitingListener;
 
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         play = homeFragmentLayout.findViewById(R.id.btn_play_fragment_home);
 
         play.setOnClickListener(this);
+
+        isWaitingForPlayers = false;
 
         updateViewsFromUser();
         return homeFragmentLayout;
@@ -119,6 +122,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
     public void openGame(DatabaseReference games)
     {
+        isWaitingForPlayers = true;
         getUserValues(userValues ->
         {
             String hostId = userValues[0];
@@ -139,7 +143,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         WaitingForPlayersDialog waitDialog = new WaitingForPlayersDialog(HomeFragment.this,room);
         waitDialog.startWaitingDialog();
         eventListenerHandler = false;
-        hostWaitingListener = new ValueEventListener() {//this needs to be accessed by cancel
+        hostWaitingListener = room.addValueEventListener(new ValueEventListener() {//this needs to be accessed by cancel
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
@@ -154,14 +158,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-        };
-        room.addValueEventListener(hostWaitingListener);
+        });
     }
     //end game functions
     public void cancelGame(DatabaseReference gameRoom)
     {
         gameRoom.removeEventListener(hostWaitingListener);
         removeGameRoom(gameRoom);
+        isWaitingForPlayers = false;
         play.setClickable(true);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        if(isWaitingForPlayers){
+            removeGameRoom(database.getReference("games").child(mAuth.getCurrentUser().getUid()));
+        }
     }
 }

@@ -463,4 +463,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {}//disables back press
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        resign();
+    }
 }
