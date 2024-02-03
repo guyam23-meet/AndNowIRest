@@ -18,14 +18,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.EventListener;
 
 public class CommonFunctions {
-
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    public static FirebaseDatabase database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
     //takes a database and the authentication and returns an array of Strings where:
     //0 - userId
     //1 - email
     //2 - name
     //3 - wins
     //4 - games played
-    public static void getUserValues(FirebaseDatabase database, FirebaseAuth mAuth, ICallBack iCallBack)
+    public static void getUserValues(ICallBack iCallBack)
     {
         String[] values = {"0","0","0","0","0"};
 

@@ -8,6 +8,7 @@
     tools:context=".GameActivity"
     android:background="#B8DCAC"
     android:layoutDirection="ltr">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,13 +17,24 @@
         android:paddingLeft="30dp"
         android:paddingTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turn_indicator"
+            android:text="It's your turn"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:background="@drawable/text_high_light"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="13dp"
+            android:fontFamily="sans-serif-medium"/>
 
         <!--enemy info-->
         <LinearLayout

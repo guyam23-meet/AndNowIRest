@@ -1,5 +1,8 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.mAuth;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,9 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public FirebaseAuth mAuth;
-    public FirebaseDatabase database;
-
     public EditText name;
     public EditText email;
     public EditText password;
@@ -34,9 +34,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         CommonFunctions.fullscreenSetup(getWindow());
         setContentView(R.layout.activity_sign_up);
         CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
-
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
 
         name = findViewById(R.id.et_name_activity_signUp);
         email = findViewById(R.id.et_email_activity_signUp);

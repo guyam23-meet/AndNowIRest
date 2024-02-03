@@ -1,5 +1,7 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.getUserValues;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +20,6 @@ public class StatsFragment extends Fragment {
     public TextView name;
     public TextView wins;
     public TextView gamesPlayed;
-    public FirebaseAuth mAuth;
-    public FirebaseDatabase database;
     public TextView winRate;
     public TextView placement;
 
@@ -28,9 +28,6 @@ public class StatsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View statsFragmentLayout = inflater.inflate(R.layout.fragment_stats, container, false);
-
-        database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
-        mAuth = FirebaseAuth.getInstance();
 
         name = statsFragmentLayout.findViewById(R.id.tv_name_fragment_stats);
         wins = statsFragmentLayout.findViewById(R.id.tv_winsValue_fragment_stats);
@@ -45,7 +42,7 @@ public class StatsFragment extends Fragment {
 
     public void updateViewsFromUser()
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        getUserValues(userValues ->
         {
             String userName = userValues[2];
             String userWins = userValues[3];

@@ -1,5 +1,8 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.mAuth;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,8 +22,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     public EditText email;
     public EditText password;
     public EditText name;
-    public FirebaseDatabase database;
-    public FirebaseAuth mAuth;
     public TextView backButton;
 
     @Override
@@ -30,9 +31,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         CommonFunctions.fullscreenSetup(getWindow());
         setContentView(R.layout.activity_edit_profile);
         CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
-
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
 
         email = findViewById(R.id.et_email_activity_edit);
         password = findViewById(R.id.et_password_activity_edit);

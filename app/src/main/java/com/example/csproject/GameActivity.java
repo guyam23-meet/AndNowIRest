@@ -1,5 +1,9 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.getUserValues;
+import static com.example.csproject.CommonFunctions.mAuth;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,9 +37,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
-
-    public FirebaseAuth mAuth;
-    public FirebaseDatabase database;
     public LinearLayout gameBoard;
     public TextView[][] tiles;
     public HashMap<Integer, int[]> tilesPositions;
@@ -46,6 +47,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public TextView myName;
     public TextView myPlacement;
     public TextView resignIcon;
+    public TextView turnIndicator;
     public Troop selectedTroop;
     public ArrayList<int[]> movementOption;
     public boolean turn;
@@ -59,20 +61,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
         CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
 
-        database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
-        mAuth = FirebaseAuth.getInstance();
-
         gameBoard = findViewById(R.id.game_board);
         setTilesAndPositions();
         connectViews();
+
         Bundle bundle = getIntent().getExtras();
         String roomRef = bundle.getString("roomRef");
 
         gameRoom = database.getReference(roomRef);
         isHost = gameRoom.getKey().equals(mAuth.getCurrentUser().getUid());
         turn = isHost;
-
         updateGuestAndHostInfoLines();
+
         updateGamesPlayed();
         gameConstructor();
         readMovesFromGameRoom();
@@ -120,13 +120,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         enemyPlacement = findViewById(R.id.tv_enemy_placement_activity_game);
         myName = findViewById(R.id.tv_name_activity_game);
         myPlacement = findViewById(R.id.tv_placement_activity_game);
+        turnIndicator = findViewById(R.id.turn_indicator);
         resignIcon = findViewById(R.id.resign_icon);
         resignIcon.setOnClickListener(this);
     }
 
     public void updateGamesPlayed()
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        getUserValues(userValues ->
         {
             String userId = userValues[0];
             int userGamesPlayed = Integer.parseInt(userValues[4]);
@@ -153,6 +154,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 myPlacement.setText(guestPlacement);
                 enemyPlacement.setText(hostPlacement);
             }
+
+            turnIndicator.setText("It's "+(turn?"your":enemyName.getText().toString().toUpperCase()+"'s")+" turn");
         });
     }
 
@@ -301,6 +304,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         checkIfWinByDeath();
         checkIfOnThrone(true, clickPos);
         turn = false;
+        turnIndicator.setText("it's "+ enemyName.getText().toString().toUpperCase()+"'s turn");
     }
 
     private void submitMoveToDatabase(int[] clickPos)
@@ -352,6 +356,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 tiles[i][j].setClickable(false);
             }
         }
+        turnIndicator.setText("Good Game!");
         gameBoard.setBackgroundResource(R.drawable.background_pixelated);
         updateUserWins(winner);
         gameRoom.removeEventListener(moveListener);
@@ -364,8 +369,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void updateUserWins(boolean winner)
     {
         String uId = mAuth.getCurrentUser().getUid();
-        int score = winner ? 1 : 0;
-        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        int score = winner? 1 : 0;
+        getUserValues(userValues ->
         {
             int wins = Integer.parseInt(userValues[3]);
             database.getReference("users/" + uId).child("wins").setValue((wins + score) + "");
@@ -387,6 +392,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             checkIfOnThrone(false, newPos);
         }
         attackCycleVisualized();
+        checkIfWinByDeath();
+        turnIndicator.setText("it's your turn");
         turn = true;
     }
 
@@ -400,8 +407,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 String moveValue = snapshot.child("move").getValue().toString();
 
-                char isHostId = isHost?'h':'g';
-                if(isHostId==moveValue.charAt(7))//check if its your action
+                char hostId = isHost?'h':'g';
+                if(hostId==moveValue.charAt(7))//check if its your action
                     return;
 
                 if(moveValue.startsWith("resign")) {

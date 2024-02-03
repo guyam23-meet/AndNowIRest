@@ -1,5 +1,9 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.getUserValues;
+import static com.example.csproject.CommonFunctions.mAuth;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +28,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public TextView name;
     public TextView placement;
     public Button play;
-    public FirebaseAuth mAuth;
-    public FirebaseDatabase database;
+
     public boolean eventListenerHandler;
     public ValueEventListener hostWaitingListener;
 
@@ -35,8 +38,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         View homeFragmentLayout = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
 
         name = homeFragmentLayout.findViewById(R.id.tv_name_fragment_home);
         placement = homeFragmentLayout.findViewById(R.id.tv_placement_fragment_home);
@@ -50,7 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public void updateViewsFromUser()
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        getUserValues(userValues ->
         {
             String userName = userValues[2];
             String userWins = userValues[3];
@@ -79,10 +80,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             {
                 if (snapshot.hasChildren())
                 {
+                    for (DataSnapshot room: snapshot.getChildren()) {
+                        if(room.getKey().equals(mAuth.getCurrentUser().getUid()))//prevents joining from same user another device
+                            return;
+                    }
                     for (DataSnapshot room: snapshot.getChildren())
                     {
-                        if(room.getKey()==mAuth.getCurrentUser().getUid())//prevents joining from same user another device
-                            return;
                         if (!room.hasChild("guest"))
                         {
                             joinGame(games.child(room.getKey()));
@@ -99,7 +102,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
     public void joinGame(DatabaseReference room)
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues -> {
+        getUserValues(userValues -> {
             String guestName = userValues[2];
             int guestWins = Integer.valueOf(userValues[3]);
             int guestGamesPlayed = Integer.valueOf(userValues[4]);
@@ -115,7 +118,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
     public void openGame(DatabaseReference games)
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        getUserValues(userValues ->
         {
             String hostId = userValues[0];
             String hostName = userValues[2];
