@@ -1,5 +1,8 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.getUserValues;
+import static com.example.csproject.CommonFunctions.mAuth;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
     private TextView profileIcon;
     public NavigationView navigationView;
 
@@ -35,9 +36,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         CommonFunctions.fullscreenSetup(getWindow());
         setContentView(R.layout.activity_home_page);
         CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
-
-        database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
-        mAuth = FirebaseAuth.getInstance();
 
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -129,7 +127,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
     }
     public void updateMenuItemsFromUser(MenuItem name,MenuItem email)
     {
-        CommonFunctions.getUserValues(database, mAuth, userValues ->
+        getUserValues(userValues ->
         {
             String userEmail = userValues[1];
             String userName = userValues[2];

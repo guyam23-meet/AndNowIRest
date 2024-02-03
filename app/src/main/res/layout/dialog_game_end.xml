@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="30dp"
+    android:paddingHorizontal="45dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layoutDirection="ltr">
+    <TextView
+        android:id="@+id/winner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You won"
+        android:textSize="30dp"
+        android:layout_marginBottom="30dp"
+        android:textAllCaps="true"/>
+    <TextView
+        android:id="@+id/back_to_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to home page"
+        android:textSize="15dp"/>
+</LinearLayout>

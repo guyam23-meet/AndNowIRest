@@ -2,6 +2,7 @@ package com.example.csproject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,27 @@ public class ResignDialog implements View.OnClickListener{
     private AlertDialog dialog;
     public TextView resignYes;
     public TextView resignNo;
-    ResignDialog(Activity myActivity) {activity = myActivity;}
+    public DialogInterface.OnCancelListener cancelListener = setCancelListener();
 
-    void startResignDialog(View view)
+    private DialogInterface.OnCancelListener setCancelListener()
+    {
+        return new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface)
+            {
+                closeResignDialog();
+            }
+        };
+    }
+
+    ResignDialog(Activity myActivity) {
+        activity = myActivity;
+    }
+
+    void startResignDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setOnCancelListener(cancelListener);
         LayoutInflater inflater = activity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_resign, null);
         resignYes = layout.findViewById(R.id.resign_yes);
@@ -30,16 +47,19 @@ public class ResignDialog implements View.OnClickListener{
         dialog = builder.create();
         dialog.show();
     }
-    void closeResignDialog() {dialog.dismiss();}
+    void closeResignDialog() {
+        ((GameActivity)activity).resignIcon.setClickable(true);
+        dialog.dismiss();
+    }
 
     @Override
     public void onClick(View view)
     {
         if(view==resignNo)
             closeResignDialog();
-        if(view==resignYes)
-        {
-
+        if(view==resignYes){
+            ((GameActivity)activity).resign();
+            closeResignDialog();
         }
     }
 }

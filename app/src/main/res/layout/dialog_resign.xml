@@ -5,7 +5,8 @@
     android:gravity="center"
     android:orientation="vertical"
     android:paddingHorizontal="25dp"
-    android:paddingVertical="15dp">
+    android:paddingVertical="15dp"
+    android:layoutDirection="ltr">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

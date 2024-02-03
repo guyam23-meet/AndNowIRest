@@ -1,8 +1,12 @@
 package com.example.csproject;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Troop {
@@ -11,10 +15,10 @@ public class Troop {
     private int attackRange;
     private int dmg;
     private int hp;
-    private String type;
-    private String id;
+    private final String type;
+    private final String id;
     private Drawable imageSRC;
-    private boolean myTeam;
+    private final boolean myTeam;
     private int[] position;
     private boolean isMaged;
     private boolean isAlive;
@@ -23,7 +27,9 @@ public class Troop {
     public static ArrayList<int[]> myPositions = new ArrayList<>();
     public static ArrayList<int[]> enemyPositions = new ArrayList<>();
 
-    public Troop(String type, String id, Boolean myTeam, int[] position)
+
+
+    public Troop(String type, String id, Boolean myTeam, int[] position, Activity activity)
     {
         troopMap.put(id, this);
         posToTroop[position[0]][position[1]] = this;
@@ -42,28 +48,28 @@ public class Troop {
                 this.attackRange = 1;
                 this.dmg = 2;
                 this.hp = 8;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "swordsman");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam? R.drawable.figure_swordsman:R.drawable.figure_enemy_swordsman);
                 break;
             case "knight":
                 this.movement = 1;
                 this.attackRange = 1;
                 this.dmg = 3;
                 this.hp = 11;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "knight");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_knight:R.drawable.figure_enemy_knight);
                 break;
             case "archer":
                 this.movement = 1;
                 this.attackRange = 2;
                 this.dmg = 2;
                 this.hp = 6;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "archer");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_archer:R.drawable.figure_enemy_archer);
                 break;
             case "mage":
                 this.movement = 1;
                 this.attackRange = 1;
                 this.dmg = 0;
                 this.hp = 6;
-                this.imageSRC = Drawable.createFromPath("@drawable/figure_" + (myTeam ? "" : "enemy_") + "mage");
+                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_mage:R.drawable.figure_enemy_mage);
                 break;
         }
     }
@@ -77,11 +83,20 @@ public class Troop {
                 posToTroop[i][j] = null;
         }
     }
-    public static void attackCycle()
+    public static ArrayList<Troop> attackCycle()
     {
         for(Troop troop:troopMap.values())
-            if(troop.getAlive())
-                troop.attack();
+            troop.attack();
+        ArrayList<Troop> deadTroops = new ArrayList<>();
+        for(Troop troop:troopMap.values())
+        {
+            if(troop.getHp()<=0){//set dead
+                deadTroops.add(troop);
+                troop.setAlive(false);
+                troop.updateStaticsAfterDeath();
+            }
+        }
+        return deadTroops;
     }
     public ArrayList<int[]> getMovingOptions()//returns all the positions the troop can move to
     {
@@ -92,7 +107,7 @@ public class Troop {
             for(int j = -1; j <= 1; j++)
             {
                 if((i == 0 && j == 0) ||//your current position
-                        posY + i > 5 || posY + i < 0 || posX + j > 5 || posY + j < 0 ||//out of bounds
+                        posY + i > 5 || posY + i < 0 || posX + j > 5 || posX + j < 0 ||//out of bounds
                         posToTroop[posY + i][posX + j] != null)//is taken by another troop
                     continue;
 
@@ -106,29 +121,18 @@ public class Troop {
                     posList.add(new int[]{posY + i, posX + j});//adds the corners
                     continue;
                 }
-                if((posToTroop[posY + i * 2][posX + j * 2] == null)&&//is empty
-                        !(posY + i*2 > 5 || posY + i*2 < 0 || posX + j*2 > 5 || posY + j*2 < 0))//in bounds
+                if(!(posY + i*2 > 5 || posY + i*2 < 0 || posX + j*2 > 5 || posX + j*2 < 0)&&//in bounds
+                        (posToTroop[posY + i * 2][posX + j * 2] == null))//is empty
                     posList.add(new int[]{posY + i * 2, posX + j * 2});
             }
         }
         return posList;
     }
 
-    public boolean moveTo(int[] position)//only moves if its within movement options and returns true if it had moved
+    public void moveTo(int[] position)//only moves if its within movement options and returns true if it had moved
     {
-        if(!getMyTeam()) {//you already got a legal move from the database
-            updateStaticsAfterMovement(position);
-            setPosition(position);
-            return true;
-        }
-        for(int[] moveOption : getMovingOptions()) {//check if the move is legal
-            if(position == moveOption) {
-                updateStaticsAfterMovement(position);
-                setPosition(position);
-                return true;
-            }
-        }
-        return false;
+        updateStaticsAfterMovement(position);
+        setPosition(position);
     }
 
     private void updateStaticsAfterMovement(int[] position)//updates the lists of position to troop and the team positions list
@@ -162,7 +166,7 @@ public class Troop {
         for(int[] target : targetList) {
             for(int[] troopPos : posList)
             {
-                if(target == troopPos) {
+                if(Arrays.equals(target,troopPos)) {
                     attackableTroops.add(posToTroop[troopPos[0]][troopPos[1]]);
                 }
             }
@@ -173,23 +177,13 @@ public class Troop {
     public void attackTroop(Troop attackedTroop)//reduces the hp and deals with troop death
     {
         attackedTroop.setHp(attackedTroop.getHp()-getDmg());
-
-        if(attackedTroop.getHp()<=0)
-            attackedTroop.setAlive(false);
-
-        if(!attackedTroop.getAlive())
-        {
-            updateStaticsAfterDeath(attackedTroop);
-        }
     }
 
-    private static void updateStaticsAfterDeath(Troop attackedTroop)
+    private void updateStaticsAfterDeath()
     {
-        int[] pos = attackedTroop.getPosition();
-        int posY = pos[0];
-        int posX = pos[1];
-        posToTroop[posY][posX] = null;
-        ArrayList<int[]> posList = attackedTroop.getMyTeam()?myPositions:enemyPositions;
+        int[] pos = getPosition();
+        posToTroop[pos[0]][pos[1]] = null;
+        ArrayList<int[]> posList = getMyTeam()?myPositions:enemyPositions;
         posList.remove(pos);
     }
 
@@ -204,7 +198,7 @@ public class Troop {
             {
                 if(!(i == j || i == -j || i == 0 || j == 0) ||//not diagonal or axis
                         (i == 0 && j == 0) ||//the same position as you
-                        (posY + i > 5 || posY + i < 0 || posX + j > 5 || posY + j < 0))//out of bounds
+                        (posY + i > 5 || posY + i < 0 || posX + j > 5 || posX + j < 0))//out of bounds
                     continue;
                 targetList.add(new int[]{posY + i, posX + j});
             }
@@ -251,6 +245,10 @@ public class Troop {
     public int[] getPosition()
     {
         return position;
+    }
+    public void setImageSRC(Drawable imageSRC)
+    {
+        this.imageSRC = imageSRC;
     }
 
     public boolean getMaged()

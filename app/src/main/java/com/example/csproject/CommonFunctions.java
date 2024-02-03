@@ -15,14 +15,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.EventListener;
+
 public class CommonFunctions {
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    public static FirebaseDatabase database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
     //takes a database and the authentication and returns an array of Strings where:
     //0 - userId
     //1 - email
     //2 - name
     //3 - wins
     //4 - games played
-    public static void getUserValues(FirebaseDatabase database, FirebaseAuth mAuth, ICallBack iCallBack)
+    public static void getUserValues(ICallBack iCallBack)
     {
         String[] values = {"0","0","0","0","0"};
 
@@ -44,37 +48,16 @@ public class CommonFunctions {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-
         });
-
     }
-
-    public static void getGameRoomValues(DatabaseReference gameRoom, ICallBack iCallBack)
+    public static void removeGameRoom(DatabaseReference gameRoom)
     {
-        String[] values = new String[7];
-        values[0] = gameRoom.getKey();
-        gameRoom.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                values[1] = snapshot.child("host").getValue().toString();
-                values[2] = snapshot.child("host_placement").getValue().toString();
-                values[3] = snapshot.child("guest").getValue().toString();
-                values[4] = snapshot.child("guest_placement").getValue().toString();
-                values[5] = snapshot.child("turn").getValue().toString();
-                values[6] = snapshot.child("move").getValue().toString();
-                iCallBack.onCallBack(values);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+        gameRoom.removeValue().addOnCompleteListener(task -> {
+            if(gameRoom.getKey()!=null)
+                gameRoom.removeValue();
         });
+    }
 
-    }
-    public static Boolean checkIsHost(DatabaseReference gameRoom,FirebaseAuth mAuth)
-    {
-        return gameRoom.getKey() == mAuth.getCurrentUser().getEmail();
-    }
 
     //fullscreen functions
     public static int hideSystemBars()
