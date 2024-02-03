@@ -1,6 +1,8 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.fullscreenSetup;
 import static com.example.csproject.CommonFunctions.mAuth;
+import static com.example.csproject.CommonFunctions.systemUiChangeManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,9 +27,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        CommonFunctions.fullscreenSetup(getWindow());
+        fullscreenSetup(getWindow());
         setContentView(R.layout.activity_main);
-        CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
+        systemUiChangeManager(getWindow().getDecorView());
         email = findViewById(R.id.et_email_activity_main);
         password = findViewById(R.id.et_password_activity_main);
         signIn = findViewById(R.id.btn_signIn_activity_main);

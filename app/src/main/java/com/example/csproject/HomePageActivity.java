@@ -1,7 +1,9 @@
 package com.example.csproject;
 
+import static com.example.csproject.CommonFunctions.fullscreenSetup;
 import static com.example.csproject.CommonFunctions.getUserValues;
 import static com.example.csproject.CommonFunctions.mAuth;
+import static com.example.csproject.CommonFunctions.systemUiChangeManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -33,9 +35,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        CommonFunctions.fullscreenSetup(getWindow());
+        fullscreenSetup(getWindow());
         setContentView(R.layout.activity_home_page);
-        CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
+        systemUiChangeManager(getWindow().getDecorView());
 
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);

@@ -3,6 +3,7 @@ package com.example.csproject;
 import static com.example.csproject.CommonFunctions.database;
 import static com.example.csproject.CommonFunctions.getUserValues;
 import static com.example.csproject.CommonFunctions.mAuth;
+import static com.example.csproject.CommonFunctions.removeGameRoom;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -160,7 +161,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void cancelGame(DatabaseReference gameRoom)
     {
         gameRoom.removeEventListener(hostWaitingListener);
-        CommonFunctions.removeGameRoom(gameRoom);
+        removeGameRoom(gameRoom);
         play.setClickable(true);
     }
 }

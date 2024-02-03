@@ -1,8 +1,11 @@
 package com.example.csproject;
 
 import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.fullscreenSetup;
 import static com.example.csproject.CommonFunctions.getUserValues;
 import static com.example.csproject.CommonFunctions.mAuth;
+import static com.example.csproject.CommonFunctions.removeGameRoom;
+import static com.example.csproject.CommonFunctions.systemUiChangeManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,9 +60,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        CommonFunctions.fullscreenSetup(getWindow());
+        fullscreenSetup(getWindow());
         setContentView(R.layout.activity_game);
-        CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
+        systemUiChangeManager(getWindow().getDecorView());
 
         gameBoard = findViewById(R.id.game_board);
         setTilesAndPositions();
@@ -361,7 +364,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         updateUserWins(winner);
         gameRoom.removeEventListener(moveListener);
         if(winner)
-            CommonFunctions.removeGameRoom(gameRoom);
+            removeGameRoom(gameRoom);
         GameEndDialog gameEndDialog = new GameEndDialog(GameActivity.this);
         gameEndDialog.startGameEndDialog(winner);
     }

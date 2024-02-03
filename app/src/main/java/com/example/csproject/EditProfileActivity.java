@@ -1,7 +1,9 @@
 package com.example.csproject;
 
 import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.fullscreenSetup;
 import static com.example.csproject.CommonFunctions.mAuth;
+import static com.example.csproject.CommonFunctions.systemUiChangeManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,9 +30,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        CommonFunctions.fullscreenSetup(getWindow());
+        fullscreenSetup(getWindow());
         setContentView(R.layout.activity_edit_profile);
-        CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
+        systemUiChangeManager(getWindow().getDecorView());
 
         email = findViewById(R.id.et_email_activity_edit);
         password = findViewById(R.id.et_password_activity_edit);
@@ -41,7 +43,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         editProfileButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View view)
     {

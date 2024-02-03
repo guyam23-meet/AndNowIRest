@@ -1,7 +1,9 @@
 package com.example.csproject;
 
 import static com.example.csproject.CommonFunctions.database;
+import static com.example.csproject.CommonFunctions.fullscreenSetup;
 import static com.example.csproject.CommonFunctions.mAuth;
+import static com.example.csproject.CommonFunctions.systemUiChangeManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,9 +33,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        CommonFunctions.fullscreenSetup(getWindow());
+        fullscreenSetup(getWindow());
         setContentView(R.layout.activity_sign_up);
-        CommonFunctions.systemUiChangeManager(getWindow().getDecorView());
+        systemUiChangeManager(getWindow().getDecorView());
 
         name = findViewById(R.id.et_name_activity_signUp);
         email = findViewById(R.id.et_email_activity_signUp);
