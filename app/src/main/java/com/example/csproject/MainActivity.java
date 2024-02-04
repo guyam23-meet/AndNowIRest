@@ -18,11 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    //the views in the page
     private EditText email;
     private EditText password;
     private TextView signUp;
     private Button signIn;
-
+    //end of the views in the page
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -30,11 +31,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fullscreenSetup(getWindow());
         setContentView(R.layout.activity_main);
         systemUiChangeManager(getWindow().getDecorView());
+
+        connectViews();
+    }
+    //connects the views to the code
+    private void connectViews()
+    {
         email = findViewById(R.id.et_email_activity_main);
         password = findViewById(R.id.et_password_activity_main);
         signIn = findViewById(R.id.btn_signIn_activity_main);
         signUp = findViewById(R.id.tv_signUp_activity_main);
-
         signIn.setOnClickListener(this);
         signUp.setOnClickListener(this);
     }
@@ -44,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         if (view == signUp)
             startActivity(new Intent(MainActivity.this, SignUpActivity.class));
-
         if (view == signIn)
             checkFieldsAndSignIn();
     }
@@ -74,5 +79,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
             Toast.makeText(MainActivity.this, "Please fill all the given fields", Toast.LENGTH_LONG).show();
     }
-    //end sign in functions
+    //end of sign in functions
 }

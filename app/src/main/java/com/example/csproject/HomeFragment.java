@@ -26,13 +26,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
+    //the views in the page
+    private TextView name;
+    private TextView placement;
+    private Button play;
+    //end of the views in the page
 
-    public TextView name;
-    public TextView placement;
-    public Button play;
-    public boolean isWaitingForPlayers;
-    public boolean eventListenerHandler;
-    public ValueEventListener hostWaitingListener;
+    //checks if the user is waiting for a game
+    private boolean isWaitingForPlayers;
+
+    //prevents the eventListener from starting when it is declared
+    private boolean eventListenerHandler;
+
+    //the listener that checks if someone entered the game
+    private ValueEventListener hostWaitingListener;
 
     @Nullable
     @Override
@@ -40,19 +47,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         View homeFragmentLayout = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-        name = homeFragmentLayout.findViewById(R.id.tv_name_fragment_home);
-        placement = homeFragmentLayout.findViewById(R.id.tv_placement_fragment_home);
-        play = homeFragmentLayout.findViewById(R.id.btn_play_fragment_home);
-
-        play.setOnClickListener(this);
+        connectViews(homeFragmentLayout);
+        updateViewsFromUser();
 
         isWaitingForPlayers = false;
 
-        updateViewsFromUser();
         return homeFragmentLayout;
     }
+    //connects the views to the code
+    private void connectViews(View homeFragmentLayout)
+    {
+        name = homeFragmentLayout.findViewById(R.id.tv_name_fragment_home);
+        placement = homeFragmentLayout.findViewById(R.id.tv_placement_fragment_home);
+        play = homeFragmentLayout.findViewById(R.id.btn_play_fragment_home);
+        play.setOnClickListener(this);
+    }
 
+    //updates the displayed info to be the user's stats
     public void updateViewsFromUser()
     {
         getUserValues(userValues ->
@@ -104,6 +115,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
     }
+
+    //joins the game and updates the database
     public void joinGame(DatabaseReference room)
     {
         getUserValues(userValues -> {
@@ -120,6 +133,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
     }
+
+    //opens a game and updates the database
     public void openGame(DatabaseReference games)
     {
         isWaitingForPlayers = true;
@@ -138,6 +153,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             waitForPlayers(room);
         });
     }
+
+    //opens a dialog and listens for a guest to join
     public void waitForPlayers(DatabaseReference room)
     {
         WaitingForPlayersDialog waitDialog = new WaitingForPlayersDialog(HomeFragment.this,room);
@@ -160,7 +177,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-    //end game functions
+
+    //cancels the game you are waiting for
     public void cancelGame(DatabaseReference gameRoom)
     {
         gameRoom.removeEventListener(hostWaitingListener);

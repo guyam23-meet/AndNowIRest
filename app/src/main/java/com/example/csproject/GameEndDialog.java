@@ -1,6 +1,5 @@
 package com.example.csproject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,36 +8,63 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 
-public class GameEndDialog implements View.OnClickListener{
-        private Activity activity;
-        private AlertDialog dialog;
-        public TextView backToHomePage;
-        public TextView winnerText;
-        GameEndDialog(Activity myActivity) {activity = myActivity;}
+public class GameEndDialog implements View.OnClickListener {
+    //the activity where you show the dialog
+    private final GameActivity gameActivity;
 
-        void startGameEndDialog(boolean winner)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            LayoutInflater inflater = activity.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.dialog_game_end, null);
-            winnerText = layout.findViewById(R.id.winner);
-            winnerText.setText("You "+(winner?"Won":"Lost"));
-            backToHomePage = layout.findViewById(R.id.back_to_home);
-            backToHomePage.setOnClickListener(this);
-            builder.setView(layout);
-            builder.setCancelable(false);
-            dialog = builder.create();
-            dialog.show();
-        }
-        void closeResignDialog() {dialog.dismiss();}
+    //the dialog itself
+    private AlertDialog dialog;
 
-        @Override
-        public void onClick(View view)
-        {
-            if(view==backToHomePage){
-                closeResignDialog();
-                activity.startActivity(new Intent(activity,HomePageActivity.class));
-            }
+    //the views
+    private TextView backToHomePage;
+    private TextView winnerText;
+    //end of the views
+
+    public GameEndDialog(GameActivity gameActivity) {this.gameActivity = gameActivity;}
+
+    //dialog start functions
+    public void startGameEndDialog(boolean winner)
+    {
+        //sets the layout
+        LayoutInflater inflater = gameActivity.getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_game_end, null);
+
+        //connects the views
+        connectViews(winner, layout);
+
+        //builds and shows the dialog
+        buildAndShow(layout);
+    }
+    private void buildAndShow(View layout)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(gameActivity);
+        builder.setView(layout);
+        builder.setCancelable(false);
+        dialog = builder.create();
+        dialog.show();
+    }
+    private void connectViews(boolean winner, View layout)
+    {
+        winnerText = layout.findViewById(R.id.winner);
+        winnerText.setText("You " + (winner ? "Won" : "Lost"));
+        backToHomePage = layout.findViewById(R.id.back_to_home);
+        backToHomePage.setOnClickListener(this);
+    }
+    //end of dialog start functions
+
+    //what to do when the dialog ends
+    private void closeResignDialog()
+    {
+        gameActivity.startActivity(new Intent(gameActivity, HomePageActivity.class));
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        if(view == backToHomePage) {
+            closeResignDialog();
         }
+    }
 }
 

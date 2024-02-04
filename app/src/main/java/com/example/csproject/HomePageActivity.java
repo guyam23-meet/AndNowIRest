@@ -26,10 +26,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
-    private Toolbar toolbar;
+
+    //drawer views
+    //the whole thing
     private DrawerLayout drawer;
+
+    //only the toolbar
+    private Toolbar toolbar;
+
+    //only the left of the drawer
+    private NavigationView navigationView;
+    //end of drawer views
+
+    //the profile icon on top right
     private TextView profileIcon;
-    public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,26 +49,31 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_home_page);
         systemUiChangeManager(getWindow().getDecorView());
 
-        toolbar = findViewById(R.id.toolbar);
-        drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-
-        profileIcon =findViewById(R.id.tv_profileIcon_activity_home);
-
-        profileIcon.setOnClickListener(this);
+        connectViews();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawerSetup(savedInstanceState);
     }
+    //connects the views to the code
+    private void connectViews()
+    {
+        toolbar = findViewById(R.id.toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        profileIcon =findViewById(R.id.tv_profileIcon_activity_home);
+        profileIcon.setOnClickListener(this);
+    }
 
+    //signs out and goes to sign in page
     public void signOut()
     {
         Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
         mAuth.signOut();
         startActivity(new Intent(HomePageActivity.this, MainActivity.class));
     }
+
     @Override
     public void onClick(View view)
     {
@@ -104,7 +119,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
     {
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-
         else
             super.onBackPressed();
     }

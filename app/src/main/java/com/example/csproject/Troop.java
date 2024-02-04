@@ -10,25 +10,32 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Troop {
-
+    //troop stats
+    private final String type;
+    private final String id;
+    private final boolean myTeam;
     private int movement;
     private int attackRange;
     private int dmg;
     private int hp;
-    private final String type;
-    private final String id;
-    private Drawable imageSRC;
-    private final boolean myTeam;
+    //end of troop stats
+    
+    //changing info of the troop
     private int[] position;
     private boolean isMaged;
-    private boolean isAlive;
+
+    //and this is for visuals
+    private Drawable troopIcon;
+    //end of changing info of the troop
+
+    //static variables for easy game logic
     public static HashMap<String, Troop> troopMap = new HashMap<>();
     public static Troop[][] posToTroop = new Troop[6][6];
     public static ArrayList<int[]> myPositions = new ArrayList<>();
     public static ArrayList<int[]> enemyPositions = new ArrayList<>();
-
-
-
+    //end of static variables for easy game logic
+    
+    //constructor
     public Troop(String type, String id, Boolean myTeam, int[] position, Activity activity)
     {
         troopMap.put(id, this);
@@ -37,42 +44,57 @@ public class Troop {
         posList.add(position);
 
         this.type = type;
-        this.isAlive = true;
         this.isMaged = false;
         this.myTeam = myTeam;
         this.position = position;
         this.id = id;
+        setStatsForType(type, activity);
+    }
+    private void setStatsForType(String type,Activity activity)
+    {
+        int movement = 0;
+        int attackRange = 0;
+        int dmg = 0;
+        int hp= 0;
+        Drawable troopIcon = null;
         switch(type) {
             case "swordsman":
-                this.movement = 2;
-                this.attackRange = 1;
-                this.dmg = 2;
-                this.hp = 8;
-                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam? R.drawable.figure_swordsman:R.drawable.figure_enemy_swordsman);
+                movement = 2;
+                attackRange = 1;
+                dmg = 2;
+                hp = 8;
+                troopIcon = AppCompatResources.getDrawable(activity,myTeam? R.drawable.figure_swordsman:R.drawable.figure_enemy_swordsman);
                 break;
             case "knight":
-                this.movement = 1;
-                this.attackRange = 1;
-                this.dmg = 3;
-                this.hp = 11;
-                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_knight:R.drawable.figure_enemy_knight);
+                movement = 1;
+                attackRange = 1;
+                dmg = 3;
+                hp = 11;
+                troopIcon = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_knight:R.drawable.figure_enemy_knight);
                 break;
             case "archer":
-                this.movement = 1;
-                this.attackRange = 2;
-                this.dmg = 2;
-                this.hp = 6;
-                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_archer:R.drawable.figure_enemy_archer);
+                movement = 1;
+                attackRange = 2;
+                dmg = 2;
+                hp = 6;
+                troopIcon = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_archer:R.drawable.figure_enemy_archer);
                 break;
             case "mage":
-                this.movement = 1;
-                this.attackRange = 1;
-                this.dmg = 0;
-                this.hp = 6;
-                this.imageSRC = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_mage:R.drawable.figure_enemy_mage);
+                movement = 1;
+                attackRange = 1;
+                dmg = 0;
+                hp = 6;
+                troopIcon = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_mage:R.drawable.figure_enemy_mage);
                 break;
         }
+        this.movement = movement;
+        this.attackRange = attackRange;
+        this.dmg = dmg;
+        this.hp = hp;
+        this.troopIcon = troopIcon;
     }
+
+    //resets the static variables before each game starts
     public static void resetStaticVariables()
     {
         troopMap.clear();
@@ -83,21 +105,8 @@ public class Troop {
                 posToTroop[i][j] = null;
         }
     }
-    public static ArrayList<Troop> attackCycle()
-    {
-        for(Troop troop:troopMap.values())
-            troop.attack();
-        ArrayList<Troop> deadTroops = new ArrayList<>();
-        for(Troop troop:troopMap.values())
-        {
-            if(troop.getHp()<=0){//set dead
-                deadTroops.add(troop);
-                troop.setAlive(false);
-                troop.updateStaticsAfterDeath();
-            }
-        }
-        return deadTroops;
-    }
+    
+    //functions for movement mechanism
     public ArrayList<int[]> getMovingOptions()//returns all the positions the troop can move to
     {
         ArrayList<int[]> posList = new ArrayList<>();
@@ -128,13 +137,11 @@ public class Troop {
         }
         return posList;
     }
-
     public void moveTo(int[] position)//only moves if its within movement options and returns true if it had moved
     {
         updateStaticsAfterMovement(position);
         setPosition(position);
     }
-
     private void updateStaticsAfterMovement(int[] position)//updates the lists of position to troop and the team positions list
     {
         posToTroop[getPosition()[0]][getPosition()[1]] = null;
@@ -143,8 +150,24 @@ public class Troop {
         posList.remove(getPosition());
         posList.add(position);
     }
-
-    public void attack()//attacks every troop from the opposite team it can
+    //end of functions for movement mechanism
+    
+    //functions for attacking mechanism
+    public static ArrayList<Troop> attackCycle()
+    {
+        for(Troop troop:troopMap.values())
+            troop.attack();
+        ArrayList<Troop> deadTroops = new ArrayList<>();
+        for(Troop troop:troopMap.values())
+        {
+            if(troop.getHp()<=0){//set dead
+                deadTroops.add(troop);
+                troop.updateStaticsAfterDeath();
+            }
+        }
+        return deadTroops;
+    }
+    private void attack()//attacks every troop from the opposite team it can
     {
         ArrayList<Troop> attackableTroops = getAttackableTroops();
         for(Troop attackableTroop : attackableTroops) {//if there is a knight in attack range, attack only the knight
@@ -157,7 +180,6 @@ public class Troop {
             attackTroop(attackableTroop);
         }
     }
-
     private ArrayList<Troop> getAttackableTroops()//returns all the troops from opposing team that the troop can attack
     {
         ArrayList<int[]> targetList = getPositionsInAttackRange();
@@ -173,12 +195,10 @@ public class Troop {
         }
         return attackableTroops;
     }
-
-    public void attackTroop(Troop attackedTroop)//reduces the hp and deals with troop death
+    private void attackTroop(Troop attackedTroop)//reduces the hp and deals with troop death
     {
         attackedTroop.setHp(attackedTroop.getHp()-getDmg());
     }
-
     private void updateStaticsAfterDeath()
     {
         int[] pos = getPosition();
@@ -186,8 +206,7 @@ public class Troop {
         ArrayList<int[]> posList = getMyTeam()?myPositions:enemyPositions;
         posList.remove(pos);
     }
-
-    public ArrayList<int[]> getPositionsInAttackRange()//return all positions in the attack range of the troop
+    private ArrayList<int[]> getPositionsInAttackRange()//return all positions in the attack range of the troop
     {
         ArrayList<int[]> targetList = new ArrayList<>();
         int posY = getPosition()[0];
@@ -205,89 +224,69 @@ public class Troop {
         }
         return targetList;
     }
+    //end of functions for attacking mechanism
 
     //getters
     public int getMovement()
     {
         return movement;
     }
-
     public int getAttackRange()
     {
         return attackRange;
     }
-
     public int getDmg()
     {
         return dmg;
     }
-
     public int getHp()
     {
         return hp;
     }
-
     public String getId()
     {
         return id;
     }
-
-    public Drawable getImageSRC()
+    public Drawable getTroopIcon()
     {
-        return imageSRC;
+        return troopIcon;
     }
-
     public boolean getMyTeam()
     {
         return myTeam;
     }
-
     public int[] getPosition()
     {
         return position;
     }
-    public void setImageSRC(Drawable imageSRC)
+    public void setTroopIcon(Drawable troopIcon)
     {
-        this.imageSRC = imageSRC;
+        this.troopIcon = troopIcon;
     }
-
     public boolean getMaged()
     {
         return isMaged;
     }
-
-    public boolean getAlive()
-    {
-        return isAlive;
-    }
-
     public String getType()
     {
         return type;
     }
+
     //setters
     public void setDmg(int dmg)
     {
         this.dmg = dmg;
     }
-
     public void setHp(int hp)
     {
         this.hp = hp;
     }
-
     public void setPosition(int[] position)
     {
         this.position = position;
     }
-
     public void setMaged(Boolean maged)
     {
         isMaged = maged;
-    }
-
-    public void setAlive(Boolean alive)
-    {
-        isAlive = alive;
     }
 }

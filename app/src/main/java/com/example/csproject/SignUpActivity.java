@@ -21,13 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-
-    public EditText name;
-    public EditText email;
-    public EditText password;
-    public TextView signUpTitle;
-    public Button signUpButton;
-    public TextView goToSignIn;
+    //the views in the page
+    private EditText name;
+    private EditText email;
+    private EditText password;
+    private Button signUpButton;
+    private TextView goToSignIn;
+    //end of the views in the page
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,21 +37,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_up);
         systemUiChangeManager(getWindow().getDecorView());
 
+        connectViews();
+    }
+    //connects the views to the code
+    private void connectViews()
+    {
         name = findViewById(R.id.et_name_activity_signUp);
         email = findViewById(R.id.et_email_activity_signUp);
         password = findViewById(R.id.et_password_activity_signUp);
-        signUpTitle = findViewById(R.id.tv_signUp_activity_signUp);
         signUpButton = findViewById(R.id.btn_submit_activity_signUp);
         goToSignIn = findViewById(R.id.tv_toSignIn_activity_signUp);
-
         signUpButton.setOnClickListener(this);
         goToSignIn.setOnClickListener(this);
     }
 
-    //creates user
-
-
-    //submit button
     @Override
     public void onClick(View view)
     {
@@ -81,7 +80,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     {
         String uid = mAuth.getCurrentUser().getUid();
         DatabaseReference userId_reference = database.getReference("users").child(uid);
-
         userId_reference.child("name").setValue(name.getText().toString());
         userId_reference.child("games_played").setValue(0);
         userId_reference.child("wins").setValue(0);
@@ -99,5 +97,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         else
             Toast.makeText(SignUpActivity.this, "Please fill all the given fields", Toast.LENGTH_LONG).show();
     }
-    //end sign up functions
+    //end of sign up functions
 }

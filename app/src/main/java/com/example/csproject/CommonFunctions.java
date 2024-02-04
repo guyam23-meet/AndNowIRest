@@ -18,15 +18,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.EventListener;
 
 public class CommonFunctions {
+    //the database and authentication, which are imported in every page
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     public static FirebaseDatabase database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
+    //end of database and authentication
+
+    public static void getUserValues(ICallBack iCallBack)
     //takes a database and the authentication and returns an array of Strings where:
     //0 - userId
     //1 - email
     //2 - name
     //3 - wins
     //4 - games played
-    public static void getUserValues(ICallBack iCallBack)
     {
         String[] values = {"0","0","0","0","0"};
 
@@ -50,6 +53,8 @@ public class CommonFunctions {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
+
+    //deletes the gameRoom
     public static void removeGameRoom(DatabaseReference gameRoom)
     {
         gameRoom.removeValue().addOnCompleteListener(task -> {
@@ -58,9 +63,8 @@ public class CommonFunctions {
         });
     }
 
-
     //fullscreen functions
-    public static int hideSystemBars()
+    private static int hideSystemBars()
     {
         return View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -70,15 +74,15 @@ public class CommonFunctions {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
     }
-    public static void systemUiChangeManager(View decorView)
+    public static void systemUiChangeManager(View decorView)//anytime you show the system toolbars, it hides them
     {
-        decorView.setOnSystemUiVisibilityChangeListener(i ->
+        decorView.setOnSystemUiVisibilityChangeListener(systemBarShown ->
         {
-            if (i == 0)
+            if (systemBarShown == 0)
                 decorView.setSystemUiVisibility(hideSystemBars());
         });
     }
-    public static void fullscreenSetup(Window window)
+    public static void fullscreenSetup(Window window)//before the setContentView, makes the app fullscreen
     {
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

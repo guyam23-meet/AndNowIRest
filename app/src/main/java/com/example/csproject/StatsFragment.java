@@ -16,12 +16,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class StatsFragment extends Fragment {
-
-    public TextView name;
-    public TextView wins;
-    public TextView gamesPlayed;
-    public TextView winRate;
-    public TextView placement;
+    //the views in the page
+    private TextView name;
+    private TextView wins;
+    private TextView gamesPlayed;
+    private TextView winRate;
+    private TextView placement;
+    //end of the views in the page
 
     @Nullable
     @Override
@@ -29,17 +30,22 @@ public class StatsFragment extends Fragment {
     {
         View statsFragmentLayout = inflater.inflate(R.layout.fragment_stats, container, false);
 
+        connectViews(statsFragmentLayout);
+        updateViewsFromUser();
+
+        return statsFragmentLayout;
+    }
+    //connects the views to the code
+    private void connectViews(View statsFragmentLayout)
+    {
         name = statsFragmentLayout.findViewById(R.id.tv_name_fragment_stats);
         wins = statsFragmentLayout.findViewById(R.id.tv_winsValue_fragment_stats);
         gamesPlayed = statsFragmentLayout.findViewById(R.id.tv_gamesPlayedValue_fragment_stats);
         winRate = statsFragmentLayout.findViewById(R.id.tv_winRateValue_fragment_stats);
         placement = statsFragmentLayout.findViewById(R.id.tv_placementValue_fragment_stats);
-
-        updateViewsFromUser();
-
-        return statsFragmentLayout;
     }
 
+    //updates the text in the views to be the user stats
     public void updateViewsFromUser()
     {
         getUserValues(userValues ->
