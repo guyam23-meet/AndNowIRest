@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -101,6 +102,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //sets the game and database listener for the game
         gameConstructor();
         readEnemyMovesFromGameRoom();
+
+        //start background music
+        startService(new Intent(GameActivity.this, musicService.class));
     }
 
     //non logic set ups
@@ -477,6 +481,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             int wins = Integer.parseInt(userValues[3]);
             database.getReference("users/" + uId).child("wins").setValue((wins + score) + "");
         });
+    }
+    public void stopBackgroundMusic()
+    {
+        stopService(new Intent(GameActivity.this, musicService.class));
     }
     //end of game end management
 

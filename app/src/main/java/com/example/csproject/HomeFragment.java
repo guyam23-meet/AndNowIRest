@@ -96,8 +96,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (snapshot.hasChildren())
                 {
                     for (DataSnapshot room: snapshot.getChildren()) {
-                        if(room.getKey().equals(mAuth.getCurrentUser().getUid()))//prevents joining from same user another device
+                        if(room.getKey().equals(mAuth.getCurrentUser().getUid()))
+                        {//prevents joining from same user another device
+                            if(!room.hasChild("guest"))
+                                removeGameRoom(games.child(room.getKey()));
+                            games.child(room.getKey()).child("move").setValue("resign_h");//it will auto resign for the first player
                             return;
+                        }
                     }
                     for (DataSnapshot room: snapshot.getChildren())
                     {

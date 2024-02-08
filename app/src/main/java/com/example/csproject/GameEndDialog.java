@@ -55,6 +55,7 @@ public class GameEndDialog implements View.OnClickListener {
     //what to do when the dialog ends
     private void closeResignDialog()
     {
+        gameActivity.stopBackgroundMusic();
         gameActivity.startActivity(new Intent(gameActivity, HomePageActivity.class));
         dialog.dismiss();
     }
