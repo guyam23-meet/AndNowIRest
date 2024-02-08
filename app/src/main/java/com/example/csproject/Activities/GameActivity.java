@@ -1,44 +1,39 @@
-package com.example.csproject;
+package com.example.csproject.Activities;
 
-import static com.example.csproject.CommonFunctions.database;
-import static com.example.csproject.CommonFunctions.fullscreenSetup;
-import static com.example.csproject.CommonFunctions.getUserValues;
-import static com.example.csproject.CommonFunctions.mAuth;
-import static com.example.csproject.CommonFunctions.removeGameRoom;
-import static com.example.csproject.CommonFunctions.systemUiChangeManager;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.database;
+import static com.example.csproject.CommonUtilities.FullScreenUtilities.fullscreenSetup;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.getUserValues;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.mAuth;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.removeGameRoom;
+import static com.example.csproject.CommonUtilities.FullScreenUtilities.systemUiChangeManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
+import com.example.csproject.CommonUtilities.DatabaseUtilities;
+import com.example.csproject.Dialogs.GameEndDialog;
+import com.example.csproject.Troops.Mage;
+import com.example.csproject.R;
+import com.example.csproject.Dialogs.ResignDialog;
+import com.example.csproject.Troops.Troop;
+import com.example.csproject.Services.musicService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     //visuals outside of the game
@@ -145,7 +140,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-    private void getGameRoomValues(DatabaseReference gameRoom, ICallBack iCallBack)
+    private void getGameRoomValues(DatabaseReference gameRoom, DatabaseUtilities.ICallBack iCallBack)
     {
         String[] values = new String[7];
         values[0] = gameRoom.getKey();

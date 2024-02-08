@@ -1,9 +1,9 @@
-package com.example.csproject;
+package com.example.csproject.Activities;
 
-import static com.example.csproject.CommonFunctions.fullscreenSetup;
-import static com.example.csproject.CommonFunctions.getUserValues;
-import static com.example.csproject.CommonFunctions.mAuth;
-import static com.example.csproject.CommonFunctions.systemUiChangeManager;
+import static com.example.csproject.CommonUtilities.FullScreenUtilities.fullscreenSetup;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.getUserValues;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.mAuth;
+import static com.example.csproject.CommonUtilities.FullScreenUtilities.systemUiChangeManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -12,7 +12,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +20,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.csproject.Fragments.HomeFragment;
+import com.example.csproject.R;
+import com.example.csproject.Fragments.StatsFragment;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
 

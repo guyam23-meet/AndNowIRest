@@ -1,9 +1,4 @@
-package com.example.csproject;
-
-import android.os.Build;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+package com.example.csproject.CommonUtilities;
 
 import androidx.annotation.NonNull;
 
@@ -15,13 +10,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.EventListener;
+public class DatabaseUtilities {
 
-public class CommonFunctions {
     //the database and authentication, which are imported in every page
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     public static FirebaseDatabase database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
-    //end of database and authentication
 
     public static void getUserValues(ICallBack iCallBack)
     //takes a database and the authentication and returns an array of Strings where:
@@ -63,33 +56,7 @@ public class CommonFunctions {
         });
     }
 
-    //fullscreen functions
-    private static int hideSystemBars()
-    {
-        return View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+    public interface ICallBack {//this is the lambda i initialize when i need to read from a database
+        void onCallBack(String[] values);
     }
-    public static void systemUiChangeManager(View decorView)//anytime you show the system toolbars, it hides them
-    {
-        decorView.setOnSystemUiVisibilityChangeListener(systemBarShown ->
-        {
-            if (systemBarShown == 0)
-                decorView.setSystemUiVisibility(hideSystemBars());
-        });
-    }
-    public static void fullscreenSetup(Window window)//before the setContentView, makes the app fullscreen
-    {
-        window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        window.getDecorView().setSystemUiVisibility(hideSystemBars());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            window.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-    }
-    //fullscreen functions
 }

@@ -1,4 +1,4 @@
-package com.example.csproject;
+package com.example.csproject.Dialogs;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
+import com.example.csproject.Activities.GameActivity;
+import com.example.csproject.Activities.HomePageActivity;
+import com.example.csproject.R;
 
 public class GameEndDialog implements View.OnClickListener {
     //the activity where you show the dialog

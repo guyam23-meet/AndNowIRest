@@ -1,6 +1,6 @@
-package com.example.csproject;
+package com.example.csproject.Fragments;
 
-import static com.example.csproject.CommonFunctions.getUserValues;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.getUserValues;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.csproject.R;
 
 public class StatsFragment extends Fragment {
     //the views in the page

@@ -1,13 +1,12 @@
-package com.example.csproject;
+package com.example.csproject.Dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
+import com.example.csproject.Fragments.HomeFragment;
+import com.example.csproject.R;
 import com.google.firebase.database.DatabaseReference;
 
 public class WaitingForPlayersDialog implements View.OnClickListener {

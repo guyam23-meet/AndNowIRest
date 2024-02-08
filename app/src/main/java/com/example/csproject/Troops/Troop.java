@@ -1,9 +1,11 @@
-package com.example.csproject;
+package com.example.csproject.Troops;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
 import androidx.appcompat.content.res.AppCompatResources;
+
+import com.example.csproject.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

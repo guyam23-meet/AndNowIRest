@@ -1,8 +1,8 @@
-package com.example.csproject;
+package com.example.csproject.Activities;
 
-import static com.example.csproject.CommonFunctions.fullscreenSetup;
-import static com.example.csproject.CommonFunctions.mAuth;
-import static com.example.csproject.CommonFunctions.systemUiChangeManager;
+import static com.example.csproject.CommonUtilities.FullScreenUtilities.fullscreenSetup;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.mAuth;
+import static com.example.csproject.CommonUtilities.FullScreenUtilities.systemUiChangeManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.csproject.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //the views in the page

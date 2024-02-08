@@ -1,4 +1,4 @@
-package com.example.csproject;
+package com.example.csproject.Troops;
 
 import android.app.Activity;
 

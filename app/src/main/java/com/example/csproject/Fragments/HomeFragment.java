@@ -1,13 +1,12 @@
-package com.example.csproject;
+package com.example.csproject.Fragments;
 
-import static com.example.csproject.CommonFunctions.database;
-import static com.example.csproject.CommonFunctions.getUserValues;
-import static com.example.csproject.CommonFunctions.mAuth;
-import static com.example.csproject.CommonFunctions.removeGameRoom;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.database;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.getUserValues;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.mAuth;
+import static com.example.csproject.CommonUtilities.DatabaseUtilities.removeGameRoom;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.csproject.Activities.GameActivity;
+import com.example.csproject.R;
+import com.example.csproject.Dialogs.WaitingForPlayersDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
