@@ -34,13 +34,13 @@ public class GameEngine {
         this.userInputManager = new UserInputManager(visualizer.getTiles(), gameActivity);
 
         this.turn = roomManager.isHost;
-        //sets the turn indicator according to the turn
+
         visualizer.turnIndicator.setVisibility(turn? View.VISIBLE:View.INVISIBLE);
     }
     private Troop[] gameConstructor(GameActivity gameActivity)
     {
 
-        Troop[] startingBoard = new Troop[]{
+        return new Troop[]{
                 //my troops
                 new Troop("archer", "ma1", true, new int[]{5, 1},gameActivity),
                 new Troop("archer", "ma2", true, new int[]{5, 3},gameActivity),
@@ -56,7 +56,7 @@ public class GameEngine {
                 new Mage("em1", false, new int[]{0, 3},gameActivity),
                 new Troop("knight", "ek1", false, new int[]{1, 3},gameActivity),
         };
-        return startingBoard;
+
     }
     private final RoomManager.IGameRoomRead iGameRoomRead = (resigned, enemyTroopId, reversedPos) ->
     {

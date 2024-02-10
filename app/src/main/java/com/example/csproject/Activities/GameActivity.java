@@ -34,20 +34,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
         systemUiChangeManager(getWindow().getDecorView());
 
-        //connects the Views outside of the game
         connectViews();
 
-        //connects the Views in the game
-        //connects the game room to the database
         Bundle bundle = getIntent().getExtras();
         String roomRef = bundle.getString("roomRef");
-        //sets the relevant booleans according to database
+
         gameEngine = new GameEngine(roomRef,findViewById(R.id.game_board),this, findViewById(R.id.turn_indicator));
-        //reads from database and updates relevant info
+
         updateGuestAndHostInfoLines();
         updateGamesPlayed();
-        //sets the game and database listener for the game
-        //start background music
+
         startService(new Intent(GameActivity.this, musicService.class));
     }
 
