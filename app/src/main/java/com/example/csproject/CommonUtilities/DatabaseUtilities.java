@@ -16,7 +16,7 @@ public class DatabaseUtilities {
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     public static FirebaseDatabase database = FirebaseDatabase.getInstance("https://csproject-99c38-default-rtdb.europe-west1.firebasedatabase.app/");
 
-    public static void getUserValues(ICallBack iCallBack)
+    public static void getUserValues(ICallBack<String[]> iCallBack)
     //takes a database and the authentication and returns an array of Strings where:
     //0 - userId
     //1 - email
@@ -55,8 +55,8 @@ public class DatabaseUtilities {
                 gameRoom.removeValue();
         });
     }
-
-    public interface ICallBack {//this is the lambda i initialize when i need to read from a database
-        void onCallBack(String[] values);
+    @FunctionalInterface
+    public interface ICallBack<T> {//this is the lambda i initialize when i need to read from a database
+        void onCallBack(T values);
     }
 }

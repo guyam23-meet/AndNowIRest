@@ -29,7 +29,7 @@
         <ImageView
             android:layout_width="30sp"
             android:layout_height="30sp"
-            android:src="@drawable/icon_placement" />
+            android:src="@drawable/still_icon_placement" />
 
         <TextView
             android:id="@+id/tv_placement_fragment_home"

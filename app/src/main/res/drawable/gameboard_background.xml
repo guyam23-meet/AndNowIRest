@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/throne_finalized"
+    android:src="@drawable/still_background_game"
     android:tileMode="disabled"
     android:filter="false"/>

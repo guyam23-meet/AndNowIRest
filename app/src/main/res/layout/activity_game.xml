@@ -31,7 +31,7 @@
             android:text="It's your turn"
             android:textSize="30dp"
             android:textColor="@color/white"
-            android:background="@drawable/text_high_light"
+            android:background="@drawable/custom_text_high_light"
             android:paddingVertical="5dp"
             android:paddingHorizontal="13dp"
             android:fontFamily="sans-serif-medium"/>
@@ -58,7 +58,7 @@
             <ImageView
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:src="@drawable/icon_placement" />
+                android:src="@drawable/still_icon_placement" />
 
             <TextView
                 android:id="@+id/tv_enemy_placement_activity_game"
@@ -76,7 +76,7 @@
             android:id="@+id/game_board"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/game_background_and_grid"
+            android:background="@drawable/gameboard_background_and_grid"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -707,7 +707,7 @@
             <ImageView
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:src="@drawable/icon_placement" />
+                android:src="@drawable/still_icon_placement" />
 
             <TextView
                 android:id="@+id/tv_placement_activity_game"

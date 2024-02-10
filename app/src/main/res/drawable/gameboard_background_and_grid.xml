@@ -2,15 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <bitmap
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:src="@drawable/background_game"
+            android:src="@drawable/still_background_game"
             android:tileMode="disabled"
             android:filter="false"/>
     </item>
     <item>
         <bitmap
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:src="@drawable/grid_nobg"
+            android:src="@drawable/still_grid_and_thrones"
             android:tileMode="disabled"
             android:filter="false"/>
     </item>

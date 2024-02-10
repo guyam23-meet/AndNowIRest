@@ -68,7 +68,7 @@ public class ResignDialog implements View.OnClickListener{
         if(view==resignNo)
             closeResignDialog();
         if(view==resignYes){
-            gameActivity.resign();
+            gameActivity.gameEngine.resign();
             closeResignDialog();
         }
     }

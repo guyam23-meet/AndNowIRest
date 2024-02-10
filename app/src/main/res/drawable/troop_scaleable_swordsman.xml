@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/troop_swordsman_finalized"
+    android:src="@drawable/still_troop_swordsman_finalized"
     android:tileMode="disabled"
     android:filter="false"/>
