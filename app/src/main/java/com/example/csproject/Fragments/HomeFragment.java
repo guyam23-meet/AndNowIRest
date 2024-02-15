@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.csproject.Activities.EditProfileActivity;
 import com.example.csproject.Activities.GameActivity;
 import com.example.csproject.R;
 import com.example.csproject.Dialogs.WaitingForPlayersDialog;
@@ -80,8 +82,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view)
     {
         if (view == play) {
-            gameSetUpManager();
             play.setClickable(false);
+            gameSetUpManager();
+
         }
     }
 
@@ -110,8 +113,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 }
-                if(!isAlreadyHost)
-                    openGame(games);
+                if(isAlreadyHost){
+                    Toast.makeText(getContext(), "Games is already opened from another device", Toast.LENGTH_LONG).show();
+                    play.setClickable(true);
+                    return;}
+                openGame(games);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

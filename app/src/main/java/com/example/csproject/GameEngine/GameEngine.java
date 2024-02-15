@@ -27,10 +27,9 @@ public class GameEngine {
     public GameEngine(String roomRef, LinearLayout gameBoard, GameActivity gameActivity, TextView turnIndicator)
     {
         Troop[] startingBoard = gameConstructor(gameActivity);
-        this.visualizer = new Visualizer(gameBoard, gameActivity, turnIndicator);
-        this.visualizer.visualizeStartingBoard(startingBoard);
+        this.visualizer = new Visualizer(gameBoard, gameActivity, turnIndicator, startingBoard);
         this.boardStateManager = new BoardStateManager(startingBoard);
-        this.roomManager = new RoomManager(roomRef, iGameRoomRead);
+        this.roomManager = new RoomManager(roomRef, onGameRoomRead);
         this.userInputManager = new UserInputManager(visualizer.getTiles(), gameActivity);
 
         this.turn = roomManager.isHost;
@@ -58,17 +57,22 @@ public class GameEngine {
         };
 
     }
-    private final RoomManager.IGameRoomRead iGameRoomRead = (resigned, enemyTroopId, reversedPos) ->
+
+    /**
+     executes the right function according to database read
+      */
+    private final RoomManager.IGameRoomRead onGameRoomRead = (resigned, enemyTroopId, reversedPos) ->
     {
         if(resigned){
             endGame(true);
             return;
         }
         Troop enemyTroop = boardStateManager.troopMap.get(enemyTroopId);
-        enemyMove(enemyTroop, reversedPos);
+        enemyAction(enemyTroop, reversedPos);
     };
 
-    private void enemyMove(Troop enemyTroop, int[] newPos)
+
+    private void enemyAction(Troop enemyTroop, int[] newPos)
     {
         Troop movePositionTroop = boardStateManager.posToTroop[newPos[0]][newPos[1]];
         if(movePositionTroop != null){//the troop is a mage that buffed an enemy troop in the given position
@@ -81,12 +85,13 @@ public class GameEngine {
             visualizer.updateVisualsAfterMovement(enemyTroop, oldPos);
             checkIfOnThrone(false, newPos);
         }
-        ArrayList<Troop> deadTroops = boardStateManager.attackCycle();
-        visualizer.attackCycleVisualized(boardStateManager.troopMap.values(), deadTroops);
+        ArrayList<Troop> hitTroops = boardStateManager.attackCycle();
+        visualizer.attackCycleVisualized(hitTroops,boardStateManager.getDeadTroops(hitTroops));
         checkIfWinByDeath();
         visualizer.turnIndicator.setVisibility(View.VISIBLE);
         turn = true;
     }
+
     //end of enemy turn logic
     //game end management
     private void checkIfWinByDeath()//checks if someone won by killing the other team, the guest wins if all are dead at the same time
@@ -135,14 +140,19 @@ public class GameEngine {
     public void finishTurn(int[] clickPos)
     {
         roomManager.submitMoveToDatabase(clickPos,userInputManager.selectedTroop, roomManager.isHost);
-        ArrayList<Troop> deadTroops = boardStateManager.attackCycle();
-        visualizer.attackCycleVisualized(boardStateManager.troopMap.values(), deadTroops);
+        ArrayList<Troop> hitTroops = boardStateManager.attackCycle();
+        visualizer.attackCycleVisualized(hitTroops,boardStateManager.getDeadTroops(hitTroops));
         checkIfWinByDeath();
         checkIfOnThrone(true, clickPos);
         turn = false;
         visualizer.turnIndicator.setVisibility(View.INVISIBLE);
     }
 
+
+    /**
+     executes the right function according to the userInputManager
+     * @param viewId: the enemy troop that made an action
+     */
     public void initializeGameClick(int viewId)
     {
         if(!turn)

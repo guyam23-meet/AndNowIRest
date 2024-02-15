@@ -19,6 +19,11 @@ public class BoardStateManager {
         this.posToTroop = new Troop[6][6];
         this.myPositions = new ArrayList<>();
         this.enemyPositions = new ArrayList<>();
+        constructBoard(startingBoard);
+    }
+
+    private void constructBoard(Troop[] startingBoard)
+    {
         for(Troop troop : startingBoard){
             troopMap.put(troop.getId(), troop);
             int[] pos = troop.getPosition();
@@ -65,15 +70,21 @@ public class BoardStateManager {
     //attack functions
     public ArrayList<Troop> attackCycle()//makes all troops attack and then calls removeDead on dead troops
     {
+        ArrayList<Troop> hitTroops = new ArrayList<>();
         for(Troop troop : troopMap.values())
-            attack(troop);
+             hitTroops.addAll(attack(troop));
+        ArrayList<Troop> deadTroops = getDeadTroops(hitTroops);
+        removeAllDead(deadTroops);//can't edit troopMap while irritating over it
+        return hitTroops;
+    }
+    public ArrayList<Troop> getDeadTroops(ArrayList<Troop> hitTroops)
+    {
         ArrayList<Troop> deadTroops = new ArrayList<>();
-        for(Troop troop : troopMap.values()) {
+        for(Troop troop : hitTroops) {
             if(troop.getHp() <= 0) {//set dead
                 deadTroops.add(troop);
             }
         }
-        removeAllDead(deadTroops);//can't edit troopMap while irritating over it
         return deadTroops;
     }
 
@@ -83,18 +94,22 @@ public class BoardStateManager {
             removeDead(dead);
     }
 
-    private void attack(Troop troop)//attacks every troop from the opposite team it can
+    private ArrayList<Troop> attack(Troop troop)//attacks every troop from the opposite team it can
     {
         ArrayList<Troop> attackableTroops = getAttackableTroops(troop);
+        ArrayList<Troop> attackedTroops = new ArrayList<>();
         for(Troop attackableTroop : attackableTroops) {//if there is a knight in attack range, attack only the knight
             if(attackableTroop.getType().equals("knight")) {
                 troop.attackTroop(attackableTroop);
-                return;
+                attackedTroops.add(attackableTroop);
+                return attackedTroops;
             }
         }
         for(Troop attackableTroop : attackableTroops) {
             troop.attackTroop(attackableTroop);
+            attackedTroops.add(attackableTroop);
         }
+        return attackedTroops;
     }
     private ArrayList<Troop> getAttackableTroops(Troop troop)//returns all the troops from opposing team that the troop can attack
     {

@@ -14,22 +14,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 public class RoomManager {
-    DatabaseReference gameRoom;
+
+    private final DatabaseReference gameRoom;
     private ValueEventListener moveListener;
     public boolean isHost;
 
-    public RoomManager(String roomRef, IGameRoomRead iGameRoomRead){
+    public RoomManager(String roomRef, IGameRoomRead iGameRoomRead)
+    {
         this.gameRoom = database.getReference(roomRef);
         this.isHost = gameRoom.getKey().equals(mAuth.getCurrentUser().getUid());
         readEnemyMovesFromGameRoom(iGameRoomRead);
     }
-    public void submitMoveToDatabase(int[] clickPos, Troop selectedTroop,boolean isHost)
+
+    public void submitMoveToDatabase(int[] clickPos, Troop selectedTroop, boolean isHost)
     {
         String troopId = selectedTroop.getId();
         String yx = "" + clickPos[0] + clickPos[1];
         String isHostLabel = isHost ? "h" : "g";
         gameRoom.child("move").setValue(troopId + "_" + yx + "_" + isHostLabel);
     }
+
     public void readEnemyMovesFromGameRoom(IGameRoomRead iGameRoomRead)
     {//gets the move the other person did
         this.moveListener = getMoveListener(iGameRoomRead);
@@ -42,9 +46,12 @@ public class RoomManager {
         if(winner)
             removeGameRoom(gameRoom);
     }
-    public interface IGameRoomRead{
-        void onGameRoomRead(boolean resigned,String enemyTroopId, int[] reversedPos);
+
+    public interface IGameRoomRead {
+
+        void onGameRoomRead(boolean resigned, String enemyTroopId, int[] reversedPos);
     }
+
     public void getGameRoomValues(DatabaseUtilities.ICallBack<String[]> iCallBack)
     {
         String[] values = new String[7];
@@ -71,11 +78,13 @@ public class RoomManager {
         });
     }
 
-    public void resign(){
-        gameRoom.child("move").setValue("resign_"+(isHost?'h':'g'));
+    public void resign()
+    {
+        gameRoom.child("move").setValue("resign_" + (isHost ? 'h' : 'g'));
     }
 
-    public ValueEventListener getMoveListener(IGameRoomRead iGameRoomRead){
+    public ValueEventListener getMoveListener(IGameRoomRead iGameRoomRead)
+    {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
@@ -84,12 +93,13 @@ public class RoomManager {
                     return;
                 String moveValue = snapshot.child("move").getValue().toString();
 
-                char hostId = isHost?'h':'g';
-                if(hostId==moveValue.charAt(7))//check if its your action
+                char hostId = isHost ? 'h' : 'g';
+                if(hostId == moveValue.charAt(7))//check if its your action
                     return;
 
                 String movedTroopPos = moveValue.substring(4, 6);
-                String reversedTroopId = "e" + moveValue.substring(1, 3);;//replaces id from other players screen to the corresponding one in this screen
+                String reversedTroopId = "e" + moveValue.substring(1, 3);
+                //replaces id from other players screen to the corresponding one in this screen
                 int y = Character.getNumericValue(movedTroopPos.charAt(0));
                 int x = Character.getNumericValue(movedTroopPos.charAt(1));
                 int[] reversedPos = new int[]{5 - y, 5 - x};//replaces position from other players screen to the corresponding one in this screen
@@ -98,10 +108,13 @@ public class RoomManager {
                 if(moveValue.startsWith("resign"))
                     resigned = true;
 
-                iGameRoomRead.onGameRoomRead(resigned,reversedTroopId,reversedPos);
+                iGameRoomRead.onGameRoomRead(resigned, reversedTroopId, reversedPos);
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+            }
         };
     }
 }

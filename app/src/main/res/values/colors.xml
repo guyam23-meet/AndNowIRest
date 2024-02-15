@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="hit">#80FFFFFF</color>
     <color name="move_option">#80008175</color>
     <color name="buffed">#66E91ED5</color>
     <color name="selected">#80FFEB3B</color>

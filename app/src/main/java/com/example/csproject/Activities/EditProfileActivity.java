@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.csproject.R;
 import com.google.firebase.database.DatabaseReference;
@@ -51,8 +52,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view)
     {
-        if(view == editProfileButton)
+        if(view == editProfileButton){
             updateProfile();
+        }
 
         else if(view == backButton)
             startActivity(new Intent(EditProfileActivity.this, HomePageActivity.class));
@@ -64,16 +66,25 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         String userId = mAuth.getCurrentUser().getUid();
         DatabaseReference userId_reference = database.getReference("users").child(userId);
 
+        boolean hasUpdated = false;
         String editNameInput = name.getText().toString();
-        if (editNameInput.length() != 0)
+        if (editNameInput.length() != 0){
             userId_reference.child("name").setValue(editNameInput);
+            hasUpdated = true;}
 
         String editEmailInput = email.getText().toString();
-        if (editEmailInput.length() != 0)
+        if (editEmailInput.length() != 0){
             mAuth.getCurrentUser().updateEmail(editEmailInput);
+            hasUpdated = true;}
 
         String editPasswordInput = password.getText().toString();
-        if (editPasswordInput.length() != 0)
+        if (editPasswordInput.length() != 0){
             mAuth.getCurrentUser().updatePassword(editPasswordInput);
+            hasUpdated = true;}
+
+        if(!hasUpdated)
+            Toast.makeText(EditProfileActivity.this, "No field has changed", Toast.LENGTH_LONG).show();
+
+        startActivity(new Intent(EditProfileActivity.this, HomePageActivity.class));
     }
 }

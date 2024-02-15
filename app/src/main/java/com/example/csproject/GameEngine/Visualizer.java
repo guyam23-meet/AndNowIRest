@@ -1,7 +1,9 @@
 package com.example.csproject.GameEngine;
 
+
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Handler;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,7 +15,6 @@ import com.example.csproject.Troops.Troop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 public class Visualizer {
     
@@ -23,13 +24,14 @@ public class Visualizer {
     public GameActivity gameActivity;
     public TextView turnIndicator;
 
-    public Visualizer(LinearLayout gameBoard , GameActivity gameActivity, TextView turnIndicator)
+    public Visualizer(LinearLayout gameBoard, GameActivity gameActivity, TextView turnIndicator, Troop[] startingBoard)
     {
         this.gameActivity = gameActivity;
         this.hpSymbol = "❤";
         this.gameBoard = gameBoard;
         this.turnIndicator = turnIndicator;
         setTiles();
+        visualizeStartingBoard(startingBoard);
     }//visual management
 
     public void visualizeStartingBoard(Troop[] startingBoard){
@@ -90,16 +92,28 @@ public class Visualizer {
         tiles[pos[0]][pos[1]].setText("");
     }
 
-    public void attackCycleVisualized(Collection<Troop> allTroops, ArrayList<Troop> deadTroops)
+    public void attackCycleVisualized(ArrayList<Troop> hitTroops,ArrayList<Troop> deadTroops)
     {
-        for(Troop troop : allTroops) {
+        for(Troop troop : hitTroops) {//need to make all of them flash white for a sec
             int[] pos = troop.getPosition();
             tiles[pos[0]][pos[1]].setText(hpSymbol + troop.getHp() + " ");
+            tiles[pos[0]][pos[1]].setBackground(visualizeHit(troop));
         }
-        for(Troop dead : deadTroops) {
-            int[] deadPos = dead.getPosition();
-            returnBackGroundToOrigin(deadPos);
-        }
+        new Handler().postDelayed(() -> {
+            for(Troop troop : hitTroops) {
+                int[] pos = troop.getPosition();
+                if(deadTroops.contains(troop))
+                    returnBackGroundToOrigin(pos);
+                else
+                    tiles[pos[0]][pos[1]].setBackground(troop.getTroopIcon());
+            }
+        }, 1000);
+    }
+
+    private Drawable visualizeHit(Troop troop)
+    {
+        Drawable[] layers = {gameActivity.getDrawable(R.drawable.visuals_hit_background), troop.getTroopIcon()};
+        return new LayerDrawable(layers);
     }
 
     public void updateVisualsAfterMovement(Troop movedTroop, int[] oldPos)
