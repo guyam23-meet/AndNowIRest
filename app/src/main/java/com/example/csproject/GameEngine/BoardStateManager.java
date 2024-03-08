@@ -126,6 +126,15 @@ public class BoardStateManager {
         }
         return attackableTroops;
     }
+    public ArrayList<Troop> getAttackingTroops()
+    {
+        ArrayList<Troop> attackingTroops = new ArrayList<>();
+        for(Troop troop:troopMap.values()){
+            if(!getAttackableTroops(troop).isEmpty())
+                attackingTroops.add(troop);
+        }
+        return attackingTroops;
+    }
 
     private void removeDead(Troop troop)//removes the dead troops from the lists
     {

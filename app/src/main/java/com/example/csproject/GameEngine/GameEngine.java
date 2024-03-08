@@ -83,13 +83,8 @@ public class GameEngine {
             int[] oldPos = enemyTroop.getPosition();
             boardStateManager.move(enemyTroop,newPos);
             visualizer.updateVisualsAfterMovement(enemyTroop, oldPos);
-            checkIfOnThrone(false, newPos);
         }
-        ArrayList<Troop> hitTroops = boardStateManager.attackCycle();
-        visualizer.attackCycleVisualized(hitTroops,boardStateManager.getDeadTroops(hitTroops));
-        checkIfWinByDeath();
-        visualizer.turnIndicator.setVisibility(View.VISIBLE);
-        turn = true;
+        finishTurn(newPos);
     }
 
     //end of enemy turn logic
@@ -137,15 +132,32 @@ public class GameEngine {
         endGame(false);
     }
 
-    public void finishTurn(int[] clickPos)
+    public void finishMyTurn(int[] clickPos)
     {
         roomManager.submitMoveToDatabase(clickPos,userInputManager.selectedTroop, roomManager.isHost);
+        finishTurn(clickPos);
+    }
+    private void finishTurn(int[] clickPos)
+    {
+        ArrayList<Troop> attackingTroops = boardStateManager.getAttackingTroops();
         ArrayList<Troop> hitTroops = boardStateManager.attackCycle();
+        removeBuff(attackingTroops);
         visualizer.attackCycleVisualized(hitTroops,boardStateManager.getDeadTroops(hitTroops));
         checkIfWinByDeath();
-        checkIfOnThrone(true, clickPos);
-        turn = false;
-        visualizer.turnIndicator.setVisibility(View.INVISIBLE);
+        checkIfOnThrone(turn, clickPos);
+        visualizer.switchTurnIndicator();
+        turn = !turn;
+    }
+
+    private void removeBuff(ArrayList<Troop> attackingTroops)
+    {
+        for(Troop troop: attackingTroops){
+            if(troop.getMaged()){
+                troop.setMaged(false);
+                troop.setDmg(troop.getDmg()-1);
+                visualizer.removeVisualBuff(troop);
+            }
+        }
     }
 
 
@@ -190,12 +202,12 @@ public class GameEngine {
         int[] lastPos = userInputManager.selectedTroop.getPosition();
         boardStateManager.move(userInputManager.selectedTroop,clickPos);
         visualizer.updateVisualsAfterMovement(userInputManager.selectedTroop, lastPos);
-        finishTurn(clickPos);
+        finishMyTurn(clickPos);
     };
     private final BiConsumer<int[],Troop> buffTroopFunction = (clickPos, clickedTroop)->
     {
         visualizer.visualizeBuff(clickedTroop);
-        finishTurn(clickPos);
+        finishMyTurn(clickPos);
     };
     private final BiConsumer<Boolean, int[]> removeSelectorsFunction = (hasMoved, clickPos)->
     {

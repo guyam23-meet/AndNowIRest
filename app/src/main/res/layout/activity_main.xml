@@ -29,7 +29,7 @@
                 android:id="@+id/tv_signIn_activity_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SignIn"
+                android:text="Sign In"
                 android:textAlignment="center"
                 android:textColor="#d41c2c"
                 android:textSize="36sp"
@@ -69,7 +69,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="#d41c2c"
-                android:text="SignIn"
+                android:text="Sign In"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
 

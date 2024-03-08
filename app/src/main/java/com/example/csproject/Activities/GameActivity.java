@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.csproject.GameEngine.GameEngine;
 import com.example.csproject.R;
 import com.example.csproject.Dialogs.ResignDialog;
-import com.example.csproject.Services.musicService;
+import com.example.csproject.Services.MusicService;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,7 +44,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         updateGuestAndHostInfoLines();
         updateGamesPlayed();
 
-        startService(new Intent(GameActivity.this, musicService.class));
+        startService(new Intent(GameActivity.this, MusicService.class));
     }
 
 
@@ -100,7 +100,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void stopBackgroundMusic()
     {
-        stopService(new Intent(GameActivity.this, musicService.class));
+        stopService(new Intent(GameActivity.this, MusicService.class));
     }
 
     @Override

@@ -4,6 +4,7 @@ package com.example.csproject.GameEngine;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -151,5 +152,21 @@ public class Visualizer {
     public TextView[][] getTiles()
     {
         return tiles;
+    }
+
+    public void removeVisualBuff(Troop troop)
+    {
+        Drawable originalIcon = ((LayerDrawable)troop.getTroopIcon()).getDrawable(1);
+        troop.setTroopIcon(originalIcon);
+        int[] pos = troop.getPosition();
+        tiles[pos[0]][pos[1]].setBackground(troop.getTroopIcon());
+    }
+
+    public void switchTurnIndicator()
+    {
+        if(turnIndicator.getVisibility() == View.INVISIBLE)
+            turnIndicator.setVisibility(View.VISIBLE);
+        else
+            turnIndicator.setVisibility(View.INVISIBLE);
     }
 }

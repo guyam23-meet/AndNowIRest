@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.csproject.R;
 
-public class musicService extends Service {
+public class MusicService extends Service {
     MediaPlayer mediaPlayer;
 
     @Nullable

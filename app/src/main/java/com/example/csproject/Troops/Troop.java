@@ -65,7 +65,7 @@ public class Troop {
             case "mage":
                 movement = 1;
                 attackRange = 1;
-                dmg = 0;
+                dmg = 1;
                 hp = 6;
                 troopIcon = AppCompatResources.getDrawable(activity,myTeam?R.drawable.figure_mage:R.drawable.figure_enemy_mage);
                 break;

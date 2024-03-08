@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="tileText">#A80000</color>
     <color name="hit">#80FFFFFF</color>
     <color name="move_option">#80008175</color>
     <color name="buffed">#66E91ED5</color>

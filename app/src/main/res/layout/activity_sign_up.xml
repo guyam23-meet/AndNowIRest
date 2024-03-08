@@ -30,7 +30,7 @@
                 android:id="@+id/tv_signUp_activity_signUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SignUp"
+                android:text="Sign Up"
                 android:textAlignment="center"
                 android:textColor="#d41c2c"
                 android:textSize="36sp"
@@ -83,7 +83,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="#d41c2c"
-                android:text="SignUp"
+                android:text="Sign Up"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
 
