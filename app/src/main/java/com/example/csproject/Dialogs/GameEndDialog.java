@@ -65,9 +65,8 @@ public class GameEndDialog implements View.OnClickListener {
     @Override
     public void onClick(View view)
     {
-        if(view == backToHomePage) {
+        if(view == backToHomePage)
             closeResignDialog();
-        }
     }
 }
 

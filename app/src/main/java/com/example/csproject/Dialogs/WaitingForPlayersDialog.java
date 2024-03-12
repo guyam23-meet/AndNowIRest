@@ -57,10 +57,7 @@ public class WaitingForPlayersDialog implements View.OnClickListener {
     //end of dialog start functions
 
     //what to do when the dialog ends
-    public void closeWaitingDialog()
-    {
-        dialog.dismiss();
-    }
+    public void closeWaitingDialog() {dialog.dismiss();}
 
     @Override
     public void onClick(View view)

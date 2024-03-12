@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.function.Consumer;
+
 public class RoomManager {
 
     private final DatabaseReference gameRoom;
@@ -23,9 +25,9 @@ public class RoomManager {
     {
         this.gameRoom = database.getReference(roomRef);
         this.isHost = gameRoom.getKey().equals(mAuth.getCurrentUser().getUid());
-        readEnemyMovesFromGameRoom(iGameRoomRead);
+        this.moveListener = getMoveListener(iGameRoomRead);
+        gameRoom.addValueEventListener(moveListener);
     }
-
     public void submitMoveToDatabase(int[] clickPos, Troop selectedTroop, boolean isHost)
     {
         String troopId = selectedTroop.getId();
@@ -33,13 +35,6 @@ public class RoomManager {
         String isHostLabel = isHost ? "h" : "g";
         gameRoom.child("move").setValue(troopId + "_" + yx + "_" + isHostLabel);
     }
-
-    public void readEnemyMovesFromGameRoom(IGameRoomRead iGameRoomRead)
-    {//gets the move the other person did
-        this.moveListener = getMoveListener(iGameRoomRead);
-        gameRoom.addValueEventListener(moveListener);
-    }
-
     public void closeGame(boolean winner)
     {
         gameRoom.removeEventListener(moveListener);
@@ -48,11 +43,10 @@ public class RoomManager {
     }
 
     public interface IGameRoomRead {
-
         void onGameRoomRead(boolean resigned, String enemyTroopId, int[] reversedPos);
     }
 
-    public void getGameRoomValues(DatabaseUtilities.ICallBack<String[]> iCallBack)
+    public void getGameRoomValues(Consumer<String[]> onCallBack)
     {
         String[] values = new String[7];
         values[0] = gameRoom.getKey();
@@ -68,7 +62,7 @@ public class RoomManager {
                     values[6] = snapshot.child("move").getValue().toString();
                 else
                     values[6] = "";
-                iCallBack.onCallBack(values);
+                onCallBack.accept(values);
             }
 
             @Override
@@ -83,7 +77,7 @@ public class RoomManager {
         gameRoom.child("move").setValue("resign_" + (isHost ? 'h' : 'g'));
     }
 
-    public ValueEventListener getMoveListener(IGameRoomRead iGameRoomRead)
+    private ValueEventListener getMoveListener(IGameRoomRead iGameRoomRead)
     {
         return new ValueEventListener() {
             @Override

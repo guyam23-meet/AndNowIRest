@@ -21,10 +21,6 @@ public class UserInputManager{
     public ArrayList<int[]> movementOption;
 
     public UserInputManager(TextView[][] tiles,GameActivity gameActivity){
-        connectTilesToPos(tiles,gameActivity);
-    }
-    private void connectTilesToPos(TextView[][] tiles,GameActivity gameActivity)
-    {
         tilesPositions = new HashMap<>();
         for(int i = 0; i < tiles.length; i++) {
             for(int j = 0; j < tiles[i].length; j++) {

@@ -9,14 +9,11 @@ import androidx.annotation.Nullable;
 import com.example.csproject.R;
 
 public class MusicService extends Service {
-    MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent)
-    {
-        return null;
-    }
+    public IBinder onBind(Intent intent) {return null;}
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
@@ -28,10 +25,7 @@ public class MusicService extends Service {
     }
 
     @Override
-    public boolean stopService(Intent name)
-    {
-        return super.stopService(name);
-    }
+    public boolean stopService(Intent name) {return super.stopService(name);}
 
     @Override
     public void onDestroy()

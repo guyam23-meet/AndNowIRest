@@ -74,7 +74,8 @@ public class BoardStateManager {
         for(Troop troop : troopMap.values())
              hitTroops.addAll(attack(troop));
         ArrayList<Troop> deadTroops = getDeadTroops(hitTroops);
-        removeAllDead(deadTroops);//can't edit troopMap while irritating over it
+        for(Troop dead: deadTroops)
+            removeDead(dead);//can't edit troopMap while irritating over it
         return hitTroops;
     }
     public ArrayList<Troop> getDeadTroops(ArrayList<Troop> hitTroops)
@@ -87,13 +88,6 @@ public class BoardStateManager {
         }
         return deadTroops;
     }
-
-    private void removeAllDead(ArrayList<Troop> deadTroops)
-    {
-        for(Troop dead: deadTroops)
-            removeDead(dead);
-    }
-
     private ArrayList<Troop> attack(Troop troop)//attacks every troop from the opposite team it can
     {
         ArrayList<Troop> attackableTroops = getAttackableTroops(troop);

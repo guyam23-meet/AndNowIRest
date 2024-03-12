@@ -43,7 +43,6 @@ public class StatsFragment extends Fragment {
         winRate = statsFragmentLayout.findViewById(R.id.tv_winRateValue_fragment_stats);
         placement = statsFragmentLayout.findViewById(R.id.tv_placementValue_fragment_stats);
     }
-
     //updates the text in the views to be the user stats
     public void updateViewsFromUser()
     {

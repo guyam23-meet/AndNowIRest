@@ -31,7 +31,6 @@ public class GameEngine {
         this.boardStateManager = new BoardStateManager(startingBoard);
         this.roomManager = new RoomManager(roomRef, onGameRoomRead);
         this.userInputManager = new UserInputManager(visualizer.getTiles(), gameActivity);
-
         this.turn = roomManager.isHost;
 
         visualizer.turnIndicator.setVisibility(turn? View.VISIBLE:View.INVISIBLE);
@@ -105,7 +104,7 @@ public class GameEngine {
         if(pos[0] == 5 && pos[1] == 0 && !myTeam)
             endGame(false);
     }
-    public void endGame(boolean winner)
+    private void endGame(boolean winner)
     {
         visualizer.turnIndicator.setText("Good Game!");
         updateUserWins(winner);
@@ -132,7 +131,7 @@ public class GameEngine {
         endGame(false);
     }
 
-    public void finishMyTurn(int[] clickPos)
+    private void finishMyTurn(int[] clickPos)
     {
         roomManager.submitMoveToDatabase(clickPos,userInputManager.selectedTroop, roomManager.isHost);
         finishTurn(clickPos);

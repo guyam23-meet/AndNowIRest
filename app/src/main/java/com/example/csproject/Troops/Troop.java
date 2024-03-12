@@ -79,9 +79,7 @@ public class Troop {
 
     //attack troop methods
     public void attackTroop(Troop attackedTroop)//reduces the hp and deals with troop death
-    {
-        attackedTroop.setHp(attackedTroop.getHp()-getDmg());
-    }
+    {attackedTroop.setHp(attackedTroop.getHp()-getDmg());}
     public ArrayList<int[]> getPositionsInAttackRange()//return all positions in the attack range of the troop
     {
         ArrayList<int[]> targetList = new ArrayList<>();

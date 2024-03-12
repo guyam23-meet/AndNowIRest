@@ -87,7 +87,7 @@ public class Visualizer {
         tile.setBackground(layerDrawable);
     }
 
-    public void returnBackGroundToOrigin(int[] pos)
+    private void returnBackGroundToOrigin(int[] pos)
     {
         tiles[pos[0]][pos[1]].setBackground(null);
         tiles[pos[0]][pos[1]].setText("");

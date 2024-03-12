@@ -93,10 +93,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         ResignDialog resignDialog = new ResignDialog(GameActivity.this);
         resignDialog.startResignDialog();
     }
-    public void enableResignButton()
-    {
-        resignIcon.setClickable(true);
-    }
+    public void enableResignButton() {resignIcon.setClickable(true);}
 
     public void stopBackgroundMusic()
     {
