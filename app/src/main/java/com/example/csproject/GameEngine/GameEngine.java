@@ -90,12 +90,10 @@ public class GameEngine {
     //game end management
     private void checkIfWinByDeath()//checks if someone won by killing the other team, the guest wins if all are dead at the same time
     {
-        ArrayList<int[]> hostPos = roomManager.isHost ? boardStateManager.myPositions : boardStateManager.enemyPositions;
-        ArrayList<int[]> guestPos = !roomManager.isHost ? boardStateManager.myPositions : boardStateManager.enemyPositions;
-        if(hostPos.isEmpty())
-            endGame(!roomManager.isHost);
-        else if(guestPos.isEmpty())
-            endGame(roomManager.isHost);
+        if(boardStateManager.myPositions.isEmpty())
+            endGame(false);
+        else if(boardStateManager.enemyPositions.isEmpty())
+            endGame(true);
     }
     private void checkIfOnThrone(boolean myTeam, int[] pos)//checks if the moved troop has got on the throne
     {
