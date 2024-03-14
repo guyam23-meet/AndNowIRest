@@ -30,14 +30,12 @@ public class UserInputManager{
         }
     }
 
-    public void gameClick(int[] clickPos,
-                                         Function<int[],Troop> getClickedTroop,
-                                         Consumer<Troop> selectTroopFunction,
-                                         Consumer<int[]> moveTroopFunction,
-                                         BiConsumer<int[],Troop> buffTroopFunction,
-                                         BiConsumer<Boolean,int[]> removeSelectorsFunction)
+    public void gameClick(int[] clickPos, Troop clickedTroop,
+                          Consumer<Troop> selectTroopFunction,
+                          Consumer<int[]> moveTroopFunction,
+                          BiConsumer<int[],Troop> buffTroopFunction,
+                          BiConsumer<Boolean,int[]> removeSelectorsFunction)
     {
-        Troop clickedTroop = getClickedTroop.apply(clickPos);//clicked troop
         if(selectedTroop == null) {//if there isn't a selected troop
             if(clickedTroop != null && clickedTroop.getMyTeam())//and you pressed on a one of your troops
                 selectTroopFunction.accept(clickedTroop);//select it

@@ -34,7 +34,19 @@ public class Visualizer {
         setTiles();
         visualizeStartingBoard(startingBoard);
     }//visual management
-
+    public void setTiles()
+    {
+        ConstraintLayout row;
+        TextView tile;
+        tiles = new TextView[6][6];
+        for(int i = 0; i < 6; i++) {
+            row = (ConstraintLayout) gameBoard.getChildAt(i);
+            for(int j = 0; j < 6; j++) {
+                tile = (TextView) row.getChildAt(j);
+                tiles[i][j] = tile;
+            }
+        }
+    }
     public void visualizeStartingBoard(Troop[] startingBoard){
         for(Troop troop : startingBoard) {
             int[] troopPos = troop.getPosition();
@@ -136,19 +148,7 @@ public class Visualizer {
             }
         }
     }
-    public void setTiles()
-    {
-        ConstraintLayout row;
-        TextView tile;
-        tiles = new TextView[6][6];
-        for(int i = 0; i < 6; i++) {
-            row = (ConstraintLayout) gameBoard.getChildAt(i);
-            for(int j = 0; j < 6; j++) {
-                tile = (TextView) row.getChildAt(j);
-                tiles[i][j] = tile;
-            }
-        }
-    }
+
     public TextView[][] getTiles()
     {
         return tiles;

@@ -89,17 +89,20 @@ public class GameEngine {
     //end of enemy turn logic
     //game end management
     private void checkIfWinByDeath()//checks if someone won by killing the other team, the guest wins if all are dead at the same time
-    {
-        if(boardStateManager.myPositions.isEmpty())
-            endGame(false);
-        else if(boardStateManager.enemyPositions.isEmpty())
-            endGame(true);
+    {//it's written using hosts and guest so in case of a draw the guest wins
+        ArrayList<int[]> hostPos = roomManager.isHost ? boardStateManager.myPositions : boardStateManager.enemyPositions;
+        ArrayList<int[]> guestPos = !roomManager.isHost ? boardStateManager.myPositions : boardStateManager.enemyPositions;
+        if(hostPos.isEmpty())
+            endGame(!roomManager.isHost);
+        else if(guestPos.isEmpty())
+            endGame(roomManager.isHost);
     }
+
     private void checkIfOnThrone(boolean myTeam, int[] pos)//checks if the moved troop has got on the throne
     {
         if(pos[0] == 0 && pos[1] == 5 && myTeam)
             endGame(true);
-        if(pos[0] == 5 && pos[1] == 0 && !myTeam)
+        else if(pos[0] == 5 && pos[1] == 0 && !myTeam)
             endGame(false);
     }
     private void endGame(boolean winner)
@@ -115,12 +118,13 @@ public class GameEngine {
 
     private void updateUserWins(boolean winner)
     {
+        if(!winner)
+            return;
         String uId = mAuth.getCurrentUser().getUid();
-        int score = winner? 1 : 0;
         getUserValues(userValues ->
         {
             int wins = Integer.parseInt(userValues[3]);
-            database.getReference("users/" + uId).child("wins").setValue((wins + score) + "");
+            database.getReference("users/" + uId).child("wins").setValue((wins + 1) + "");
         });
     }
     public void resign()
@@ -160,18 +164,16 @@ public class GameEngine {
 
     /**
      executes the right function according to the userInputManager
-     * @param viewId: the enemy troop that made an action
+     * @param tilePos: the position of the tile that was pressed
      */
-    public void initializeGameClick(int viewId)
+    public void initializeGameClick(int[] tilePos)
     {
         if(!turn)
             return;
+        userInputManager.gameClick(tilePos,
 
-        int[] clickPos = userInputManager.tilesPositions.get(viewId);
-        userInputManager.gameClick(clickPos,
-
-                //gets the clicked troop
-                getClickedTroop,
+                //the clicked troop
+                boardStateManager.posToTroop[tilePos[0]][tilePos[1]],
 
                 //gets the legal moves and visualizes
                 selectTroopFunction,
@@ -185,8 +187,6 @@ public class GameEngine {
                 //removes the visual selections
                 removeSelectorsFunction);
     }
-
-    private final Function<int[],Troop> getClickedTroop = (clickPos)-> boardStateManager.posToTroop[clickPos[0]][clickPos[1]];
     private final Consumer<Troop> selectTroopFunction = (clickedTroop)->
     {
         userInputManager.selectedTroop = clickedTroop;

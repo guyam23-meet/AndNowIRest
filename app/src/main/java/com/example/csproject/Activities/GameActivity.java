@@ -108,9 +108,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         int viewId = view.getId();
-        if(gameEngine.userInputManager.tilesPositions.get(viewId) != null){//if you pressed a tile
-            gameEngine.initializeGameClick(viewId);
-
+        int[] tilePos = gameEngine.userInputManager.tilesPositions.get(viewId);
+        if(tilePos != null){//if you pressed a tile
+            gameEngine.initializeGameClick(tilePos);
         }
     }
     @Override
